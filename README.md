@@ -1,9 +1,9 @@
-# WebRTC Project
-©INSAT 2015
+# WebRTC-enabled project
+© INSAT 2015
 
 ==
 
-## To install :
+### To install :
 
  * Install meteor :
 ```sh
@@ -16,6 +16,8 @@ cd project_directory
 meteor
 ```
 
-## Demo :
+### Demo :
+
+utmd7CZAYL5Ze378L.meteor.com
 
 
