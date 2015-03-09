@@ -3,7 +3,7 @@
 
 ==
 
-### To install :
+### Deployment instructions :
 
  * Install meteor :
 ```sh
@@ -18,6 +18,6 @@ meteor
 
 ### Demo :
 
-utmd7CZAYL5Ze378L.meteor.com
+A demo version is available [here](utmd7CZAYL5Ze378L.meteor.com). Any comment or bug found is greatly appreciated :).
 
 
