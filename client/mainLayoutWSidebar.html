@@ -1,3 +1,4 @@
+<template name="mainLayout">
 <!-- saved from url=(0064)http://ironsummitmedia.github.io/startbootstrap-simple-sidebar/# -->
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -25,12 +26,12 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="#">
-                        Options
+                    <a href="/">
+                        Page principal
                     </a>
                 </li>
                 <li>
-                    <a href=" ">Liste des matières</a>
+                    <a href="courses">Liste des matières</a>
                 </li>
                 <li>
                     <a href=" ">Aide</a>
@@ -43,22 +44,10 @@
                 </li>
             </ul>
         </div>
-        <!-- /#sidebar-wrapper -->
 
-        <!-- Page Content -->
         <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1>Plateforme d'échange des étudiants</h1>
-                        <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-                        <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-                        <a href="http://ironsummitmedia.github.io/startbootstrap-simple-sidebar/#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-                    </div>
-                </div>
-            </div>
+            {{> yield}}
         </div>
-        <!-- /#page-content-wrapper -->
 
     </div>
 
@@ -74,3 +63,4 @@
 
 
 </body>
+</template>
