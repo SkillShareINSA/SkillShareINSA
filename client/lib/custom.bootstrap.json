@@ -5,8 +5,8 @@
   "scaffolding":          false,
   "type":                 true,
   "code":                 false,
-  "grid":                 false,
-  "tables":               false,
+  "grid":                 true,
+  "tables":               true,
   "forms":                true,
   "buttons":              true,
 
@@ -29,11 +29,11 @@
   "panels":               false,
   "responsive-embed":     false,
   "wells":                false,
-  "close":                false,
+  "close":                true,
 
   "component-animations": false,
   "dropdowns":            false,
-  "modals":               false,
+  "modals":               true,
   "tooltip":              false,
   "popovers":             false,
   "carousel":             false,
@@ -46,6 +46,6 @@
   "tab":                  false,
   "transition":           false,
 
-  "utilities":            false,
+  "utilities":            true,
   "responsive-utilities": false
 }}
