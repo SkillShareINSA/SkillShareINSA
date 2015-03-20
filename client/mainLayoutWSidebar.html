@@ -1,6 +1,5 @@
 <template name="mainLayout">
     <div id="wrapper" class="">
-
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -24,6 +23,8 @@
             </ul>
         </div>
 
+        <div id="sidebar-opener"><i class="fa fa-bars"></i></div>
+
         <div id="page-content-wrapper">
             {{> yield}}
         </div>
@@ -32,7 +33,7 @@
 
     <!-- Menu Toggle Script -->
     <script>
-    $("#menu-toggle").click(function(e) {
+    $("#menu-toggle, #sidebar-opener").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
