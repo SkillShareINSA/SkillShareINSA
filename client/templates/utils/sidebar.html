@@ -1,0 +1,31 @@
+<template name="sidebar">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="/">
+                    Page principal
+                </a>
+            </li>
+            <li>
+                <a href="courses">Liste des matières</a>
+            </li>
+            <li>
+                <a href=" ">Aide</a>
+            </li>
+            <li>
+                <a href=" ">About us</a>
+            </li>
+            <li>
+                <a href=" ">Contact</a>
+            </li>
+        </ul>
+    </div>
+
+    <div id="sidebar-opener"><i class="fa fa-bars"></i></div>
+    <script>
+        $("#menu-toggle, #sidebar-opener").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
+</template>
