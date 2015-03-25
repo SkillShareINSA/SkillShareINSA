@@ -16,7 +16,7 @@ var pc_constraints = {
     {'DtlsSrtpKeyAgreement': true}
   ]};
 var sdpConstraints = {};
-var constraints = {video: true, audio: true};
+var constraints = {video: false, audio: true};
 // Opera --> getUserMedia
 // Chrome --> webkitGetUserMedia
 // Firefox --> mozGetUserMedia
@@ -24,20 +24,21 @@ navigator.getUserMedia = navigator.getUserMedia ||
 navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 Template.videoCall.events({
   'click #callBtn' : function(event) {
+      console.log('User id ' + Meteor.user().username);
       // TODO : add a createConnectionRequest step before letting user make call
       isInitiator = true;
       navigator.getUserMedia(constraints, getUserMediaHandler, getUserMediaErrorHandler);
-      console.log('getUserMedia succeded with constraints', constraints);
       if (!isStarted && typeof localStream != 'undefined' && isChannelReady) {
         createPeerConnection();
         isStarted = true;
-        if (isInitiator) {
-          doCall();
-        }
+        doCall();
       }
-      Meteor.call('initiateCall', 'hoa', 'mai',
+      Meteor.call('initiateCall', Meteor.user().username, 'chao',
         function(error, result) {
-          console.log(result);
+          if (!error)
+            console.log(result);
+          else
+            console.log(error.error);
         });
   },
   'click #hangupBtn' : function(event) {
@@ -49,8 +50,9 @@ Template.videoCall.events({
 });
 // getUserMedia() handlers...
 function getUserMediaHandler(stream) {
+  console.log('getUserMedia succeded with constraints', constraints);
   localStream = stream;
-  attachMediaStream(localVideo, stream);
+  // attachMediaStream(localVideo, stream);
   console.log('Adding local stream.');
   sendMessage('got user media');
 }
@@ -119,11 +121,21 @@ var isStarted = false;
 
 // Handle 'join' message coming back from server:
 // another peer is joining the channel
-socket.on('join', function (room){
-  console.log('Another peer made a request to join room ' + room);
-  console.log('This peer is the initiator of room ' + room + '!');
-  isChannelReady = true;
+Meteor.ClientCall.methods({
+   askToJoin : function(user) {
+     console.log('User ' + user + 'asking to join');
+   }
 });
+/**
+ * Remote functions that could be invoked by Meteor server
+ */
+Meteor.ClientCall.methods({
+  callRequest : function(caller) {
+    console.log('Server : ' + caller + ' want to call. Accept ?');
+    isChannelReady = true;
+  }
+});
+
 // Handle 'joined' message coming back from server:
 // this is the second peer joining the channel
 socket.on('joined', function (room){

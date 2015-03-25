@@ -12,6 +12,7 @@ Template.connect.events({
         console.log('User logged in failed : ' + err.reason);
       }
     });
+    Meteor.ClientCall.setClientId(Meteor.userId());
     return false;
   }
 });
