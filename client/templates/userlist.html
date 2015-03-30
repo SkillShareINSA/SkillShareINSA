@@ -1,0 +1,21 @@
+<template name="userList">
+    <div id="userList">
+        Our beloved users
+        <ul>
+        {{#each userList}}
+            <li>
+            {{#if username}}
+                {{username}}
+            {{else}}
+                {{#each emails}}
+                    {{address}}
+                {{/each}}
+            {{/if}}{{status}}
+            <i class="fa fa-circle-thin"
+                    style="{{#with status}}{{#if online}} background-color: chartreuse; {{/if}}{{/with}}"></i>
+            </li>
+
+        {{/each}}
+        </ul>
+    </div>
+</template>
