@@ -1,6 +1,7 @@
-var localVideo =  $('#localVideo');
-var remoteVideo = $('#remoteVideo');
-var isInitiator;
+
+var isInitiator = false;
+var isChannelReady = false;
+var isStarted = false;
 // WebRTC data structures
 // Streams
 var localStream;
@@ -16,7 +17,8 @@ var pc_constraints = {
     {'DtlsSrtpKeyAgreement': true}
   ]};
 var sdpConstraints = {};
-var constraints = {video: false, audio: true};
+var constraints = {video: true, audio: true};
+var remoteUsername;
 // Opera --> getUserMedia
 // Chrome --> webkitGetUserMedia
 // Firefox --> mozGetUserMedia
@@ -25,34 +27,82 @@ navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 Template.videoCall.events({
   'click #callBtn' : function(event) {
       console.log('User id ' + Meteor.user().username);
-      // TODO : add a createConnectionRequest step before letting user make call
       isInitiator = true;
-      navigator.getUserMedia(constraints, getUserMediaHandler, getUserMediaErrorHandler);
-      if (!isStarted && typeof localStream != 'undefined' && isChannelReady) {
-        createPeerConnection();
-        isStarted = true;
-        doCall();
-      }
-      Meteor.call('initiateCall', Meteor.user().username, 'chao',
+      remoteUsername = Meteor.user().username == 'an' ? 'chao' : 'an';
+      Meteor.call('initiateCall', Meteor.user().username, remoteUsername,
         function(error, result) {
-          if (!error)
+          if (!error) {
             console.log(result);
-          else
+            navigator.getUserMedia(constraints, getUserMediaHandler, getUserMediaErrorHandler);
+            isChannelReady = true;
+          } else {
             console.log(error.error);
+          }
         });
   },
   'click #hangupBtn' : function(event) {
-      Meteor.call('terminateCall', 'hoa', 'mai',
+      Meteor.call('terminateCall', Meteor.user().username, remoteUsername,
         function(error, result) {
           console.log(result);
         });
   }
 });
+
+
+/**
+ * Remote functions that could be invoked by Meteor server
+ */
+Meteor.ClientCall.methods({
+  callRequest : function(caller, calleeId) {
+    if (!Meteor.userId() || Meteor.userId() != calleeId) {
+      return;
+    }
+    console.log('Received callRequest : ' + caller + ' want to call. Accept ?');
+    isChannelReady = true;
+    navigator.getUserMedia(constraints, getUserMediaHandler, getUserMediaErrorHandler);
+    console.log('Getting user media with constraints', constraints);
+    Meteor.call('acceptCall', caller);
+    remoteUsername = caller;
+  },
+
+  log : function (array){
+    console.log.apply(console, array);
+  },
+  message : function (message, receiverId){
+    if (!Meteor.userId() || Meteor.userId() != receiverId) {
+      return;
+    }
+
+    if (message === 'got user media') {
+      console.log('Received message:', message);
+      checkAndStart();
+    } else if (message.type === 'offer') {
+      console.log('Received message : offer');
+      if (!isInitiator && !isStarted) {
+        checkAndStart();
+      }
+      pc.setRemoteDescription(new RTCSessionDescription(message));
+      doAnswer();
+    } else if (message.type === 'answer' && isStarted) {
+      console.log('Received message : answer');
+      pc.setRemoteDescription(new RTCSessionDescription(message));
+    } else if (message.type === 'candidate' && isStarted) {
+      console.log('Received message : candidate');
+      var candidate = new RTCIceCandidate({sdpMLineIndex:message.label,
+        candidate:message.candidate});
+      pc.addIceCandidate(candidate);
+    } else if (message === 'bye' && isStarted) {
+      handleRemoteHangup();
+    }
+  }
+});
+
 // getUserMedia() handlers...
 function getUserMediaHandler(stream) {
   console.log('getUserMedia succeded with constraints', constraints);
   localStream = stream;
-  // attachMediaStream(localVideo, stream);
+  var localVideo = document.querySelector('#localVideo');
+  attachMediaStream(localVideo, stream);
   console.log('Adding local stream.');
   sendMessage('got user media');
 }
@@ -61,14 +111,18 @@ function getUserMediaErrorHandler(error){
 }
 // Channel negotiation trigger function
 function checkAndStart() {
-
+  if (!isStarted && typeof localStream != 'undefined' && isChannelReady) {
+    createPeerConnection();
+    isStarted = true;
+    doCall();
+  }
 }
 // PeerConnection management...
 function createPeerConnection() {
   try {
     pc = new RTCPeerConnection(pc_config, pc_constraints);
     pc.addStream(localStream);
-    pc.onicecandidate = handleIceCandidate;
+    //pc.onicecandidate = handleIceCandidate;
     console.log('Created RTCPeerConnnection with:\n' +
     ' config: \'' + JSON.stringify(pc_config) + '\';\n' +
     ' constraints: \'' + JSON.stringify(pc_constraints) + '\'.');
@@ -96,8 +150,8 @@ function handleIceCandidate(event) {
 // 2. Client-->Server
 // Send message to the other peer via the signaling server
 function sendMessage(message){
-  console.log('Sending message: ', message);
-  Meteor.call('sendMessage', 'hoa', 'mai', message,
+  console.log('Sending message: ');
+  Meteor.call('sendMessage', Meteor.user().username, remoteUsername, message,
     function(error, result) {
       console.log(result);
     });
@@ -106,6 +160,7 @@ function sendMessage(message){
 // Remote stream handlers...
 function handleRemoteStreamAdded(event) {
   console.log('Remote stream added.');
+  var remoteVideo = document.querySelector('#remoteVideo');
   attachMediaStream(remoteVideo, event.stream);
   console.log('Remote stream attached!!.');
   remoteStream = event.stream;
@@ -114,69 +169,10 @@ function handleRemoteStreamRemoved(event) {
   console.log('Remote stream removed. Event: ', event);
 }
 window.onbeforeunload = function(e){
-  hangup();
+  if (isStarted)
+    hangup();
 }
-var isChannelReady = false;
-var isStarted = false;
 
-// Handle 'join' message coming back from server:
-// another peer is joining the channel
-Meteor.ClientCall.methods({
-   askToJoin : function(user) {
-     console.log('User ' + user + 'asking to join');
-   }
-});
-/**
- * Remote functions that could be invoked by Meteor server
- */
-Meteor.ClientCall.methods({
-  callRequest : function(caller) {
-    console.log('Server : ' + caller + ' want to call. Accept ?');
-    isChannelReady = true;
-  }
-});
-
-// Handle 'joined' message coming back from server:
-// this is the second peer joining the channel
-socket.on('joined', function (room){
-  console.log('This peer has joined room ' + room);
-  isChannelReady = true;
-// Call getUserMedia()
-  navigator.getUserMedia(constraints, getUserMediaHandler, getUserMediaErrorHandler);
-  console.log('Getting user media with constraints', constraints);
-});
-// Server-sent log message...
-socket.on('log', function (array){
-  console.log.apply(console, array);
-});
-// Receive message from the other peer via the signaling server
-socket.on('message', function (message){
-  console.log('Received message:', message);
-  if (message === 'got user media') {
-    checkAndStart();
-  } else if (message.type === 'offer') {
-    if (!isInitiator && !isStarted) {
-      checkAndStart();
-    }
-    pc.setRemoteDescription(new RTCSessionDescription(message));
-    doAnswer();
-  } else if (message.type === 'answer' && isStarted) {
-    pc.setRemoteDescription(new RTCSessionDescription(message));
-  } else if (message.type === 'candidate' && isStarted) {
-    var candidate = new RTCIceCandidate({sdpMLineIndex:message.label,
-      candidate:message.candidate});
-    pc.addIceCandidate(candidate);
-  } else if (message === 'bye' && isStarted) {
-    handleRemoteHangup();
-  }
-});
-// Data channel management
-function sendData() {
-  var data = sendTextarea.value;
-  if(isInitiator) sendChannel.send(data);
-  else receiveChannel.send(data);
-  trace('Sent data: ' + data);
-}
 
 // Create Offer
 function doCall() {
@@ -212,9 +208,6 @@ function handleRemoteHangup() {
 }
 function stop() {
   isStarted = false;
-  if (sendChannel) sendChannel.close();
-  if (receiveChannel) receiveChannel.close();
   if (pc) pc.close();
   pc = null;
-  sendButton.disabled=true;
 }
