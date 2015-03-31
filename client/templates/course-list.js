@@ -3,6 +3,7 @@ Template.courseList.helpers({
         return SkillList.find();
     }
 });
+
 Template.courseList.events({
     'click .removeBtn' : function(event) {
         var skillName = $(event.target).parent().text();
@@ -16,3 +17,22 @@ Template.courseList.events({
         $('#myModal').modal('hide');
     }
 });
+
+//if (Meteor.isClient) {
+    Template.seekHelp.helpers({
+        'skillList' : function() {
+            return SkillList.find();
+        },
+
+        'getTeachersOf' : function(skillName) {
+            if (Meteor.isClient)
+                console.log("Je suis client");
+            else
+                console.log("Je suis serveur");
+            console.log("SKILLNAME: "+skillName);
+            var skill = SkillList.findOne({name : skillName});
+            console.log(skill.teachers);
+            return skill.teachers;
+        }
+    });
+//}
