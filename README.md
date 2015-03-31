@@ -1,7 +1,8 @@
-# WebRTC-enabled project
+# skillshareinsa.io 
 © INSAT 2015
 
-==
+A hyper-cool website for INSAiens to study, chat, and discuss things that matter, via video conferencing. 
+
 
 ### Deployment instructions :
 

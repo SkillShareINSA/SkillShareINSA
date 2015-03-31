@@ -11,3 +11,6 @@ less
 nemo64:bootstrap
 iron:router
 fortawesome:fontawesome
+accounts-password
+anti:methods
+mizzao:user-status

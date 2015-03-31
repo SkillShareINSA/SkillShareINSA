@@ -1,0 +1,19 @@
+<template name="videoCall">
+    <div id="videoCallPanel">
+        {{>userList}}
+        <div id="videoCallPanel" class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <video id="remoteVideo" autoplay></video>
+                </div>
+                <div class="col-md-4">
+                    <video id="localVideo" autoplay></video>
+                </div>
+            </div>
+            <div id="btnPanel">
+                <button id="callBtn" class="btn btn-info">Call</button>
+                <button id="hangupBtn" class="btn btn-default">Hang up</button>
+            </div>
+        </div>
+    </div>
+</template>
