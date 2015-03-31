@@ -43,7 +43,8 @@ Template.videoCall.events({
   'click #hangupBtn' : function(event) {
       Meteor.call('terminateCall', Meteor.user().username, remoteUsername,
         function(error, result) {
-          console.log(result);
+          console.log('Hung up call with ' + remoteUsername);
+          stop();
         });
   }
 });
@@ -92,6 +93,9 @@ Meteor.ClientCall.methods({
         candidate:message.candidate});
       pc.addIceCandidate(candidate);
     } else if (message === 'bye' && isStarted) {
+      if (!Meteor.userId() || Meteor.userId() != receiverId) {
+        return;
+      }
       handleRemoteHangup();
     }
   }
@@ -210,4 +214,5 @@ function stop() {
   isStarted = false;
   if (pc) pc.close();
   pc = null;
+  $('#localVideo').attr('src', null);
 }

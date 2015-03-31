@@ -35,6 +35,8 @@ Meteor.methods({
   terminateCall : function(activeSide, passiveSide) {
     var msgLog =  'Server : ' + activeSide + ' hang up call with ' + passiveSide;
     console.log(msgLog);
+    var passiveSideRecord = Meteor.users.findOne({username : passiveSide});
+    Meteor.ClientCall.apply(passiveSideRecord._id, 'message', ['bye', passiveSideRecord._id]);
     return msgLog;
   },
   sendMessage : function(sender, receiver, message) {
