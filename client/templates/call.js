@@ -122,7 +122,7 @@ function createPeerConnection() {
   try {
     pc = new RTCPeerConnection(pc_config, pc_constraints);
     pc.addStream(localStream);
-    //pc.onicecandidate = handleIceCandidate;
+    pc.onicecandidate = handleIceCandidate;
     console.log('Created RTCPeerConnnection with:\n' +
     ' config: \'' + JSON.stringify(pc_config) + '\';\n' +
     ' constraints: \'' + JSON.stringify(pc_constraints) + '\'.');
@@ -181,7 +181,7 @@ function doCall() {
 }
 // Signaling error handler
 function onSignalingError(error) {
-  console.log('Failed to create signaling message : ' + error.name);
+  console.log('Failed to create signaling message : ' + error);
 }
 // Create Answer
 function doAnswer() {
