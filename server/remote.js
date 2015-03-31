@@ -47,3 +47,7 @@ Meteor.methods({
     return msgLog;
   }
 });
+
+Meteor.publish('usersStatus', function() {
+  return Meteor.users.find({}, {fields: {"status.online" : 1, emails : 1}});
+});

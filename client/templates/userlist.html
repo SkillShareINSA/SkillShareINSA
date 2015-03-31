@@ -10,11 +10,9 @@
                 {{#each emails}}
                     {{address}}
                 {{/each}}
-            {{/if}}{{status}}
-            <i class="fa fa-circle-thin"
-                    style="{{#with status}}{{#if online}} background-color: chartreuse; {{/if}}{{/with}}"></i>
+            {{/if}}
+            <i class="fa fa-circle-thin {{#if status.online}}online{{/if}}"></i>
             </li>
-
         {{/each}}
         </ul>
     </div>
