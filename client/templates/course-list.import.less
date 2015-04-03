@@ -12,10 +12,35 @@
 #addCourseBtn, #courseListTable {
   margin-right: 20px;
 }
+#courseListPanel table td {
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+}
 
-.removeBtn {
-  color : white;
-  background-color: rgba(115, 56, 112, 0.63);
+#courseListPanel table td:hover {
+  background-color: rgba(184, 225, 193, 0.53);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+// keep removebutton normal size
+#courseListPanel table td:hover .removeBtn {
+  font-size: 16px;
+}
+#courseListPanel .removeBtn {
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  color : black;
+}
+
+#courseListPanel .removeBtn:hover {
+  font-size : 20px !important;
 }
 
 #modal-skillNameInput {
