@@ -89,9 +89,6 @@ Meteor.ClientCall.methods({
         candidate:message.candidate});
       pc.addIceCandidate(candidate);
     } else if (message === 'bye' && isStarted) {
-      if (!Meteor.userId() || Meteor.userId() != receiverId) {
-        return;
-      }
       handleRemoteHangup();
     }
   }
