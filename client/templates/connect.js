@@ -8,7 +8,6 @@ Template.connect.events({
     Meteor.loginWithPassword(form['username'], form['password'], function(err) {
       if (!err) {
         console.log('User logged in : ' + Meteor.userId());
-        Meteor.ClientCall.setClientId(Meteor.userId());
       } else {
         console.log('User logged in failed : ' + err.reason);
       }

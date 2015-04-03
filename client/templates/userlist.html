@@ -3,6 +3,7 @@
         Our beloved users
         <ul>
         {{#each userList}}
+            {{#unless isCurrentUser username}}
             <li>
             {{#if username}}
                 {{username}}
@@ -13,6 +14,7 @@
             {{/if}}
             <i class="fa fa-circle-thin {{#if status.online}}online{{/if}}"></i>
             </li>
+            {{/unless}}
         {{/each}}
         </ul>
     </div>

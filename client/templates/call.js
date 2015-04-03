@@ -1,4 +1,6 @@
-
+Template.videoCall.onCreated(function() {
+    Meteor.ClientCall.setClientId(Meteor.userId());
+});
 var isInitiator = false;
 var isChannelReady = false;
 var isStarted = false;
@@ -54,10 +56,7 @@ Template.videoCall.events({
  * Remote functions that could be invoked by Meteor server
  */
 Meteor.ClientCall.methods({
-  callRequest : function(caller, calleeId) {
-    if (!Meteor.userId() || Meteor.userId() != calleeId) {
-      return;
-    }
+  callRequest : function(caller) {
     console.log('Received callRequest : ' + caller + ' want to call. Accept ?');
     isChannelReady = true;
     navigator.getUserMedia(constraints, getUserMediaHandler, getUserMediaErrorHandler);
@@ -69,10 +68,7 @@ Meteor.ClientCall.methods({
   log : function (array){
     console.log.apply(console, array);
   },
-  message : function (message, receiverId){
-    if (!Meteor.userId() || Meteor.userId() != receiverId) {
-      return;
-    }
+  message : function (message){
 
     if (message === 'got user media') {
       console.log('Received message:', message);
