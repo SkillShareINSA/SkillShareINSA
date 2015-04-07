@@ -25,3 +25,11 @@ Meteor.startup(function () {
         }
     }
 });
+
+if (Meteor.isServer) {
+    Meteor.methods({
+        'logIn' : function(input) {
+            console.log("SERVER : HELLO");
+        }
+    });
+}
