@@ -28,41 +28,13 @@ Template.defaultPage.helpers({
 
 
 Template.defaultPage.events({
+    // 'start' : function() {
+    //     Meteor.call('login_requested',"jauffret");
+    // },
+
     'click #connect' : function(event) {
-    //     console.log("CLICKED §§§§");
-
-    //     var xhr = new XMLHttpRequest();
-    //     var file = "www.google.com";
-            
-    //     // xhr.ontimeout = function () {
-    //     //     console.log("Timed out");
-    //     //    /*TODO : do something about it*/
-    //     // }
-
-
-    //     xhr.onreadystatechange = function () {
-
-    //         if (xhr.readyState == 4) {
-    //             if (xhr.status >= 200 && xhr.status < 304) {
-    //                 console.log("Received something and succeced");
-    //             }
-    //             else {
-    //                 console.log("Received something and failed");
-    //                 /*TODO : do something about it*/
-    //             }
-    //         }
-    //     }
-
-    //     xhr.open('GET', file, false);
-    //     //xhr.timeout = 10000;
-
-    //     try {
-    //         console.log("xhr : "+xhr);
-    //         xhr.send();
-    //         console.log("after");
-    //     } catch (e) {
-    //         /*TODO : do something about it*/
-    //     }
+         console.log("TRUC");
+         Meteor.call('login_requested',"rprevost");
     }
 });
 

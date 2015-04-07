@@ -41,15 +41,3 @@ Meteor.startup(function () {
       }
   }
 });
-/*
-Meteor.methods({
-  foo : function (arg) {
-    console.log("What is arg ? " + arg);
-    check(arg, Number);
-    if (arg == 1) {
-      return 42;
-    }
-    return "You suck";
-  }
-});
-*/
