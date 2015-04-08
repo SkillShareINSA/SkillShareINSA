@@ -2,10 +2,18 @@ Meteor.startup(function () {
     if (SkillList.find().count() === 0) {
         var data = [
             {
-                name: "Ada 1ère année"
+                name: "Ada 1ère année",
+                teachers: [
+                    'Toto',
+                    'Pascal'
+                ]
             },
             {
-                name: "Maths 2"
+                name: "Maths 2",
+                teachers: [
+                    'Pascal',
+                    'Paul'
+                ]
             },
             {
                 name: "PPI 3"
@@ -33,15 +41,3 @@ Meteor.startup(function () {
       }
   }
 });
-/*
-Meteor.methods({
-  foo : function (arg) {
-    console.log("What is arg ? " + arg);
-    check(arg, Number);
-    if (arg == 1) {
-      return 42;
-    }
-    return "You suck";
-  }
-});
-*/

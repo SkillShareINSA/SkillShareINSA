@@ -44,5 +44,25 @@ Meteor.methods({
     var receiverRecord = Meteor.users.findOne({username : receiver});
     Meteor.ClientCall.apply(receiverRecord._id, 'message', [message]);
     return msgLog;
-  }
+  },
+
+  login_requested : function (user_name) {
+        var url = "http://localhost/callCAS/is_connected.php";
+
+        console.log(url);
+
+        HTTP.get(url, {params: {is_connected: user_name}}, function (error, result) {
+            if (!error) {
+              if (result.content == 1) {
+                console.log("User " + user_name + " is connect");
+              }
+              else {
+                console.log("User " + user_name + " is not connected");
+              }
+            }
+            else {
+              console.log("error : "+ error);
+            }
+          });
+    }
 });
