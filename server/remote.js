@@ -20,15 +20,17 @@ Meteor.methods({
       console.log('Attempt of ' + caller + ' to call offline user ' + callee);
       throw new Meteor.Error('offline-callee');
     }
-    console.log(calleeRecord._id);
-    Meteor.ClientCall.apply(calleeRecord._id, 'callRequest', [caller]);
+    Meteor.ClientCall.apply(calleeRecord._id, 'callRequested', [caller]);
     return 'Server : Call initiated successfully !';
   },
 
-  // forward acceptCall request to client
   acceptCall : function(caller) {
     var callerRecord = Meteor.users.findOne({username : caller});
-    Meteor.ClientCall.apply(callerRecord._id, 'acceptCall');
+    Meteor.ClientCall.apply(callerRecord._id, 'callAccepted');
+  },
+  refuseCall : function(caller) {
+    var callerRecord = Meteor.users.findOne({username : caller});
+    Meteor.ClientCall.apply(callerRecord._id, 'callRefused');
   },
 
   terminateCall : function(activeSide, passiveSide) {
