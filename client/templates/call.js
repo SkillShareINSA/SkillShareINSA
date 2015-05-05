@@ -52,7 +52,6 @@ Template.acceptCallPopup.events({
     });
   },
   'click #cancelButton' : function() {
-    console.log('haha');
     webrtcCall.refuseCall(function(caller) {
       $('#' + acceptCallPopupId).modal('hide');
     })
@@ -62,6 +61,12 @@ Template.acceptCallPopup.events({
 Template.callRefusedPopup.helpers({
   popupId : function() {
     return callRefusedPopupId;
+  }
+});
+
+Template.callRefusedPopup.events({
+  'click #confirmButton' : function() {
+    $('#' + callRefusedPopupId).modal('hide');
   }
 });
 

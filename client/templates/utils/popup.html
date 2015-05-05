@@ -12,7 +12,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    {{#if cancelButton}}
                     <button id="cancelButton" type="button" class="btn btn-default" data-dismiss="modal">{{cancelButton}}</button>
+                    {{/if}}
                     <button id="confirmButton" type="button" class="btn btn-primary">{{confirmButton}}</button>
                 </div>
             </div>
