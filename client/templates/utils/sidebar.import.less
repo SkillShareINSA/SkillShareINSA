@@ -9,12 +9,12 @@
 #sidebar-wrapper {
     width :100%;
     padding-bottom: 10px;
-    background: #F4F4F4;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
     margin-top: -273px;
+    border-right : 1px ridge @sidebar-border-color;
 }
 #wrapper.toggled #sidebar-wrapper {
     margin-top: 0;
@@ -61,8 +61,7 @@
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: #fff;
-    background: @sidebar-hover-color;
+    color: @sidebar-hover-color;
 }
 
 .sidebar-nav li a:active,
@@ -71,14 +70,22 @@
 }
 
 .sidebar-nav > .sidebar-brand {
-    height: 65px;
-    font-size: 18px;
-    line-height: 60px;
+    height: 77px;
+    line-height: 24px;
+    border-bottom: 1px ridge @sidebar-border-color;
 }
 
 .sidebar-nav > .sidebar-brand a {
+    margin-top : 12px;
+    font-size: 18px;
     color : @sidebar-color;
 }
+
+.sidebar-nav > .sidebar-brand i {
+    display: block;
+    font-size: 14px;
+}
+
 
 @media(min-width:768px) {
     #wrapper {

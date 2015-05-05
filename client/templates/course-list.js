@@ -46,6 +46,9 @@ Template.courseList.helpers({
 });
 
 Template.courseList.events({
+    'click #addCourseBtn' : function(event) {
+        $('#myModal').modal('show').css("z-index", "1500");
+    },
     'click .removeBtn' : function(event) {
         var skillName = $(event.target).parent().text();
         // TODO : replace with publish/subscribe mechanism

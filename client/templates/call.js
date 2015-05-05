@@ -48,6 +48,7 @@ Template.videoCall.events({
 });
 
 var makeCall = function(remoteUsername) {
+  Session.set('callmate', remoteUsername);
   console.log('Calling ' + remoteUsername);
   webrtcCall.call(remoteUsername, function(result) {
     if (result.error) {
@@ -71,6 +72,7 @@ Template.acceptCallPopup.events({
   'click #confirmButton' : function() {
     webrtcCall.acceptCall(function(caller) {
       $('#' + acceptCallPopupId).modal('hide');
+      Session.set('callmate', caller);
     });
   },
   'click #cancelButton' : function() {
@@ -98,3 +100,8 @@ Template.hangupCallPopup.events({
   }
 });
 
+// define helper for conveniently get other participant username
+// without template-specific helpers
+Handlebars.registerHelper('callmate',function(input){
+  return Session.get("callmate");
+});

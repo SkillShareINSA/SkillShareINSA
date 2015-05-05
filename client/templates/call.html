@@ -2,19 +2,25 @@
     <div id="videoCallPanel" >
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-8 col-md-offset-1">
                     <video id="remoteVideo" autoplay></video>
                 </div>
                 <div class="col-md-4">
                     <video id="localVideo" autoplay muted></video>
                 </div>
             </div>
-            <div id="btnPanel">
-                <input id="calleeUsername" placeholder="Person to call ? "/>
-                <button id="callBtn" class="btn btn-info">Call</button>
-                <button id="hangupBtn" class="btn btn-default">Hang up</button>
+            <div class="row">
+                <div id="btnPanel" class="col-md-4 col-md-offset-3">
+                    <input id="calleeUsername" type="text" class="form-control" placeholder="Identifiant de votre collègue"/>
+                </div>
             </div>
-        <div class="pull-right">
+            <div class="row">
+                <div id="btnPanel" class="col-md-4 col-md-offset-3">
+                    <button id="callBtn" class="btn btn-info">Appeler</button>
+                    <button id="hangupBtn" class="btn btn-default">Raccrocher</button>
+                </div>
+            </div>
+        <div id="userListPanel">
         {{>userList}}
         </div>
         </div>
@@ -26,28 +32,28 @@
 </template>
 
 <template name="acceptCallPopup">
-    {{#popup popupId=popupId title="Incoming call"
-            confirmButton="Accept" cancelButton="Refuse"}}
+    {{#popup popupId=popupId title="Ding dong !"
+            confirmButton="Accepter" cancelButton="Refuser"}}
         <div class="col-sm-10">
-            Incoming call from {{caller}}. Accept ?
+            Vous avez un nouvel appel de <span class="username">{{caller}}</span>. Acceptez ?
         </div>
     {{/popup}}
 </template>
 
 <template name="callRefusedPopup">
-    {{#popup popupId=popupId title="Call refused"
+    {{#popup popupId=popupId title="Appel refusé"
             confirmButton="OK"}}
         <div class="col-sm-10">
-            Call refused.
+            <span class="username">{{callmate}}</span> n'est pas disponible. Essayez plus tard.
         </div>
     {{/popup}}
 </template>
 
 <template name="hangupCallPopup">
-    {{#popup popupId="hangupCallPopup" title="Call terminated"
+    {{#popup popupId="hangupCallPopup" title="Appel terminé"
             confirmButton="OK"}}
         <div class="col-sm-10">
-            The other guy hung up.
+            <span class="username">{{callmate}}</span> a raccroché.
         </div>
     {{/popup}}
 </template>
