@@ -1,7 +1,5 @@
 <template name="videoCall">
     <div id="videoCallPanel" >
-        {{>userList}}
-
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">
@@ -16,6 +14,9 @@
                 <button id="callBtn" class="btn btn-info">Call</button>
                 <button id="hangupBtn" class="btn btn-default">Hang up</button>
             </div>
+        <div class="pull-right">
+        {{>userList}}
+        </div>
         </div>
     </div>
 
@@ -26,8 +27,8 @@
 
 <template name="acceptCallPopup">
     {{#popup popupId=popupId title="Incoming call"
-            confirmButton="Yup" cancelButton="Refuse"}}
-        <div class="col-sm-5">
+            confirmButton="Accept" cancelButton="Refuse"}}
+        <div class="col-sm-10">
             Incoming call from {{caller}}. Accept ?
         </div>
     {{/popup}}
@@ -35,8 +36,8 @@
 
 <template name="callRefusedPopup">
     {{#popup popupId=popupId title="Call refused"
-    confirmButton="OK"}}
-        <div class="col-sm-5">
+            confirmButton="OK"}}
+        <div class="col-sm-10">
             Call refused.
         </div>
     {{/popup}}
@@ -45,7 +46,7 @@
 <template name="hangupCallPopup">
     {{#popup popupId="hangupCallPopup" title="Call terminated"
             confirmButton="OK"}}
-        <div class="col-sm-5">
+        <div class="col-sm-10">
             The other guy hung up.
         </div>
     {{/popup}}

@@ -4,8 +4,7 @@
 // mixins and variables that bootstrap provides.
 
 @import "custom.bootstrap.mixins.import.less";
-
-
+@import url(http://fonts.googleapis.com/css?family=Lato);
 // @import "bootstrap/less/variables.less"
 //
 // Variables
@@ -51,13 +50,13 @@
 //
 //## Font, line-height, and color for body text, headings, and more.
 
-@font-family-sans-serif:  "Helvetica Neue", Helvetica, Arial, sans-serif;
+@font-family-sans-serif:  "Lato", sans-serif;;
 @font-family-serif:       Georgia, "Times New Roman", Times, serif;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 @font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
 @font-family-base:        @font-family-sans-serif;
 
-@font-size-base:          14px;
+@font-size-base:          16px;
 @font-size-large:         ceil((@font-size-base * 1.25)); // ~18px
 @font-size-small:         ceil((@font-size-base * 0.85)); // ~12px
 
@@ -613,7 +612,7 @@
 
 @modal-lg:                    900px;
 @modal-md:                    600px;
-@modal-sm:                    300px;
+@modal-sm:                    400px;
 
 
 //== Alerts
