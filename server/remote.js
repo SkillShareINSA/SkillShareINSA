@@ -1,7 +1,71 @@
 /**
  *  Remote functions that could be invoked by Meteor clients
  */
-Meteor.methods({
+Accounts.registerLoginHandler(function(login_requested) {
+    var url = "http://localhost/callCAS/is_connected.php";
+    var user_name = login_requested.username;
+
+    console.log("HANDLER +++++++");
+
+    console.log(url);
+
+    HTTP.get(url, {params: {is_connected: user_name}}, function (error, result) {
+      if (!error) {
+        if (result.content == 1) {
+          console.log("METEOR : User " + user_name + " is connect");
+          /★ Si l'utilisateur n'existe pas, on le créee ★/
+          if (Meteor.users.find({username:user_name}).fetch().length == 0) {
+            /★ Creation du compte ★/
+            Accounts.createUser({username:user_name,password : "123"},null);
+                  //console.log("$$$$$$An online : " +Meteor.users.find({username:user_name}).fetch()[0].status.online);
+            }
+
+                /★ Connexion de l'utilisateur ★/
+                Meteor.users.update(
+                  {username : user_name},
+                  {$set: 
+                    {status: {
+                      online : true}
+                    }
+                  }
+                  );
+
+                console.log("rprevost : online :"+ Meteor.users.find({username:user_name}).fetch()[0].status.online 
+                  + " ," + Meteor.users.find({username:user_name}).fetch()[0]._id);
+
+                  //creating the token and adding to the user
+                  var stampedToken = Accounts._generateStampedLoginToken();
+                  //hashing is something added with Meteor 0.7.x, 
+                  //you don't need to do hashing in previous versions
+                  var hashStampedToken = Accounts._hashStampedToken(stampedToken);
+                  
+                  var userId = Meteor.users.find({username:user_name}).fetch()[0]._id;
+
+                  Meteor.users.update(userId, 
+                    {$push: {'services.resume.loginTokens': hashStampedToken}}
+                  );
+
+                  //sending token along with the userId
+                  return {
+                    id: userId,
+                    token: stampedToken.token
+                  }
+
+              }
+              else {
+                console.log("METEOR : User " + user_name + " is not connected");
+                return null;
+              }
+            }
+            else {
+              console.log("error : "+ error);
+              return null;
+            }
+          });
+}
+);
+
+ Meteor.methods({
 
   // forward initiateCall request to client (callRequest)
   initiateCall :function(caller, callee) {
@@ -46,23 +110,52 @@ Meteor.methods({
     return msgLog;
   },
 
+  logout_requested : function (user_name) {
+      var url = "http://localhost/callCAS/disconnect.php";
+
+      console.log(url);
+
+      HTTP.get(url, {params: {user: user_name}});
+  },
+
   login_requested : function (user_name) {
-        var url = "http://localhost/callCAS/is_connected.php";
+    var url = "http://localhost/callCAS/is_connected.php";
 
-        console.log(url);
+    console.log(url);
 
-        HTTP.get(url, {params: {is_connected: user_name}}, function (error, result) {
-            if (!error) {
-              if (result.content == 1) {
-                console.log("User " + user_name + " is connect");
+    HTTP.get(url, {params: {is_connected: user_name}}, function (error, result) {
+      if (!error) {
+        if (result.content == 1) {
+          console.log("METEOR : User " + user_name + " is connect");
+          /★ Si l'utilisateur n'existe pas, on le créee ★/
+          if (Meteor.users.find({username:user_name}).fetch().length == 0) {
+            /★ Creation du compte ★/
+            Accounts.createUser({username:user_name,password : "123"},null);
+                  //console.log("$$$$$$An online : " +Meteor.users.find({username:user_name}).fetch()[0].status.online);
+                }
+
+                /★ Connexion de l'utilisateur ★/
+                Meteor.users.update(
+                  {username : user_name},
+                  {$set: 
+                    {status: {
+                      online : true}
+                    }
+                  }
+                  );
+
+                console.log("rprevost : online :"+ Meteor.users.find({username:user_name}).fetch()[0].status.online);
+
+                return true;
               }
               else {
-                console.log("User " + user_name + " is not connected");
+                console.log("METEOR : User " + user_name + " is not connected");
+                return false;
               }
             }
             else {
               console.log("error : "+ error);
             }
           });
-    }
+}
 });
