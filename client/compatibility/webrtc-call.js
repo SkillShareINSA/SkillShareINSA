@@ -56,10 +56,11 @@ function WebRTCCall () {
     isInitiator = true;
     if (!Meteor.users.findOne({username : username})) {
       // invalid username
-      return true;
+      callback({error : "User not found"});
     } else {
       remoteUsername = username;
       Meteor.call('initiateCall', Meteor.user().username, username, cb);
+      callback({});
     }
   };
 

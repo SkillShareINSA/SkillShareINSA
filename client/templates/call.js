@@ -23,11 +23,22 @@ webrtcCall.onHangup(function() {
   $('#localVideo').attr('src', null);
 });
 
+Template.videoCall.onRendered(function() {
+  var self = this;
+  Tracker.autorun(function() {
+    if (Session.get('users_loaded')) {
+      // page called with style /call/userId
+      if (self.data && self.data.userId) {
+        makeCall(self.data.userId);
+      }
+    }
+  });
+});
 Template.videoCall.events({
   'click #callBtn' : function(event, template) {
     console.log('User id ' + Meteor.user().username);
     var remoteUsername = template.find('#calleeUsername').value;
-    webrtcCall.call(remoteUsername, null);
+    makeCall(remoteUsername);
   },
   'click #hangupBtn' : function(event) {
     webrtcCall.hangup(function(error, result) {
@@ -35,6 +46,17 @@ Template.videoCall.events({
     });
   }
 });
+
+var makeCall = function(remoteUsername) {
+  console.log('Calling ' + remoteUsername);
+  webrtcCall.call(remoteUsername, function(result) {
+    if (result.error) {
+      console.log(result.error);
+    }
+  });
+  //$('#calleeUsername').hide();
+  //$('#callBtn').hide();
+}
 
 Template.acceptCallPopup.helpers({
   caller : function() {
