@@ -6,24 +6,6 @@ if (Meteor.isServer) {
     });
 }
 
-Template.defaultPage.helpers({
-    'start' : function() {
-    
-        function extractUrlParams(){    
-            var t = location.search.substring(1).split('&');
-            var f = [];
-            for (var i=0; i<t.length; i++){
-                var x = t[ i ].split('=');
-                f[x[0]]=x[1];
-            }
-            return f;
-        }
-
-        if (extractUrlParams().length != 0)  {
-
-        }  
-    }
-});
 
 
 
@@ -33,8 +15,10 @@ Template.defaultPage.events({
     // },
 
     'click #connect' : function(event) {
-         console.log("TRUC");
-         Meteor.call('login_requested',"rprevost");
+        var url = "localhost/callCAS/index.php";
+        console.log("before");
+        HTTP.get(url, function (error, result) {});
+        console.log("after");
     }
 });
 
@@ -62,7 +46,7 @@ Template.courseList.events({
     }
 });
 
-//if (Meteor.isClient) {
+
     Template.seekHelp.helpers({
         'skillList' : function() {
             return SkillList.find();
@@ -79,4 +63,17 @@ Template.courseList.events({
             return skill.teachers;
         }
     });
-//}
+
+Template.postConnect.onCreated = function() {
+    Accounts.callLoginMethod({
+        methodArguments: [{username: Router.current().params.query.user}]
+    });
+    //Meteor.call('login_requested',Router.current().params.query.user);
+    Router.go('courses');
+};
+
+Template.logout.logout = function() {
+    Meteor.logout();
+    Meteor.call('logout_requested',Router.current().params.query.user);
+    Router.go('/');
+};

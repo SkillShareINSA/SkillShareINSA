@@ -33,6 +33,10 @@ Meteor.startup(function () {
         {
           username : 'chao',
           password : '456'
+        },
+        {
+          username : 'rprevost',
+          password : '123'
         }
       ];
       var i;
