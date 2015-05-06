@@ -38,6 +38,10 @@ Template.courseList.events({
         // TODO : replace with publish/subscribe mechanism
         var skillId = SkillList.findOne({name : skillName})._id;
         SkillList.remove(skillId);
+        return false;
+    },
+    'click #courseListTable td' : function(event) {
+        $(event.target).parent().next('.hidden-info').toggle();
     },
     'click #modal-addCourseBtn' : function(event) {
         var skillName = $('#modal-skillNameInput').val();
