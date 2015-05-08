@@ -66,7 +66,7 @@ Template.videoCall.events({
     console.log('User id ' + Meteor.user().username);
     var remoteUsername = template.find('#calleeUsername').value;
     makeCall(remoteUsername);
-  },g
+  },
   'click #hangupBtn' : function(event) {
     webrtcCall.hangup(function(error, result) {
       console.log('Hung up call with ' + Session.get('callmate'));
