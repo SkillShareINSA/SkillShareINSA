@@ -6,7 +6,7 @@
 }
 #videoCallPanel video#remoteVideo {
   background-color: #F4F4F4;
-  height : 270px;
+  height : 312px;
 }
 #videoCallPanel .container-fluid {
   margin-top : 20px;
@@ -30,4 +30,19 @@
 .username {
 	font-weight: bold;
 	color : #D35353;
+}
+#chatPanel #dataChannelReceive {
+  resize : none;
+  margin-top: 10px;
+}
+#chatPanel #sendDataBtn {
+  margin-top: 5px;
+}
+@media(min-width:768px) { 
+  #chatPanel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 157px;
+  }
 }

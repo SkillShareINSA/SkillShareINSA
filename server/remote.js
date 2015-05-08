@@ -88,9 +88,9 @@ Accounts.registerLoginHandler(function(login_requested) {
     return 'Server : Call initiated successfully !';
   },
 
-  acceptCall : function(caller) {
+  acceptCall : function(caller, callee) {
     var callerRecord = Meteor.users.findOne({username : caller});
-    Meteor.ClientCall.apply(callerRecord._id, 'callAccepted');
+    Meteor.ClientCall.apply(callerRecord._id, 'callAccepted', [callee]);
   },
   refuseCall : function(caller) {
     var callerRecord = Meteor.users.findOne({username : caller});

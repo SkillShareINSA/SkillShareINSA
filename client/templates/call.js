@@ -1,4 +1,4 @@
-var webrtcCall = new WebRTCCall();
+webrtcCall = new WebRTCCall();
 
 var acceptCallPopupId = "acceptCallPopup";
 var hangupCallPopupId = "hangupCallPopup";
@@ -11,17 +11,40 @@ webrtcCall.onCall(function(caller) {
   $('#' + acceptCallPopupId).modal('show').css("z-index", "1500");
 });
 webrtcCall.onGetUserMediaError(function() {
-  console.log('Yeehaw');
+  alert("Erreur d'acces a votre video");
 });
 webrtcCall.onCallRefused(function(caller) {
   $('#' + callRefusedPopupId).modal('show').css("z-index", "1500");
 });
 webrtcCall.onRemoteHangup(function() {
+  $('#dataChannelReceive').attr('disabled', 'disabled');
+  
+  $('#dataChannelReceive').attr('placeholder', '');
+  $('#sendDataBtn').attr('disabled', 'disabled');
   $('#' + hangupCallPopupId).modal('show').css("z-index", "1500");
 });
 webrtcCall.onHangup(function() {
   $('#localVideo').attr('src', null);
+  $('#dataChannelReceive').attr('disabled', 'disabled');
+  $('#sendDataBtn').attr('disabled', 'disabled');
 });
+webrtcCall.onDataChannelReady(function() {
+  $('#dataChannelReceive').attr('disabled', false);
+  $('#dataChannelReceive').attr('placeholder', '');
+  $('#sendDataBtn').attr('disabled', false);
+});
+
+chatStream = new Meteor.Stream('chat');
+if(Meteor.isClient) {
+  sendChat = function(message) {
+    chatStream.emit('message', message);
+    console.log('me: ' + message);
+  };
+
+  chatStream.on('message', function(message) {
+    console.log('user: ' + message);
+  });
+}
 
 Template.videoCall.onRendered(function() {
   var self = this;
@@ -42,7 +65,13 @@ Template.videoCall.events({
   },
   'click #hangupBtn' : function(event) {
     webrtcCall.hangup(function(error, result) {
-      console.log('Hung up call with ' + remoteUsername);
+      console.log('Hung up call with ' + Session.get('callmate'));
+    });
+  },
+  'click #sendDataBtn' : function(event) {
+    var data = $('#sendTextarea').value;
+    webrtcCall.sendData(data, function() {
+      console.log('Sent ' + data);
     });
   }
 });

@@ -20,9 +20,15 @@
                     <button id="hangupBtn" class="btn btn-default">Raccrocher</button>
                 </div>
             </div>
-        <div id="userListPanel">
-        {{>userList}}
-        </div>
+            <div id="userListPanel">
+            {{>userList}}
+            </div>
+            <div id="chatPanel">
+                <textarea rows="10" cols="60"
+                              id="dataChannelReceive" disabled class="form-control"
+                              placeholder="Chat n'est pas disponible"></textarea>
+                <button id="sendDataBtn" disabled class="btn btn-danger form-control">Send</button>
+            </div>
         </div>
     </div>
 
@@ -32,7 +38,7 @@
 </template>
 
 <template name="acceptCallPopup">
-    {{#popup popupId=popupId title="Ding dong !"
+    {{#popup popupId=popupId title="Appel reçu !"
             confirmButton="Accepter" cancelButton="Refuser"}}
         <div class="col-sm-10">
             Vous avez un nouvel appel de <span class="username">{{caller}}</span>. Acceptez ?
