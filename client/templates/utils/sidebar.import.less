@@ -13,8 +13,7 @@
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
-    margin-top: -273px;
-    border-right : 1px ridge @sidebar-border-color;
+    margin-top: -342px;
 }
 #wrapper.toggled #sidebar-wrapper {
     margin-top: 0;
@@ -33,13 +32,13 @@
     font-size: 30px;
     text-align: center;
     border-bottom: 2px rgb(24, 6, 6) solid;
+    border-top: 1px dotted;
 }
 
 #sidebar-opener:hover {
     font-size: 35px;
     height: 40px;
-    padding: 2px 0;
-    background-color: #60ff88;
+    padding-bottom: 53px;
 }
 
 .sidebar-nav {
@@ -132,5 +131,8 @@
     }
     #sidebar-opener {
         display: none;
+    }
+    #sidebar-wrapper {
+        border-right : 1px ridge @sidebar-border-color;
     }
 }
