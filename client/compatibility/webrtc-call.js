@@ -33,6 +33,7 @@ function WebRTCCall () {
   var onRemoteHangupCallback;
   var onGetUserMediaErrorCallback;
   var onDataChannelReadyCallback;
+  var onDataChannelMessageCallback;
 
   var localVideoId;
   var remoteVideoId;
@@ -349,19 +350,19 @@ function WebRTCCall () {
 
   /* DATA CHANNEL MANAGEMENT */
   this.sendData = function(data, callback) {
-    sendDataViaDataChannel(data);
-    callback();
+    if(isInitiator) sendChannel.send(data, callback);
+    else receiveChannel.send(data, callback);
+    trace('Sent data: ' + data);
   }
 
   this.onDataChannelReady = function(callback) {
     onDataChannelReadyCallback = callback;
   }
 
-  function sendDataViaDataChannel(data) {
-    if(isInitiator) sendChannel.send(data);
-    else receiveChannel.send(data);
-    trace('Sent data: ' + data);
+  this.onDataChannelMessage = function(callback) {
+    onDataChannelMessageCallback = callback;
   }
+ 
 
   function gotReceiveChannel(event) {
     trace('Receive Channel Callback');
@@ -373,7 +374,7 @@ function WebRTCCall () {
   }
   function handleMessage(event) {
     trace('Received message: ' + event.data);
-    receiveTextarea.value += event.data + '\n';
+    onDataChannelMessageCallback(event.data);
   }
   function handleSendChannelStateChange() {
     var readyState = sendChannel.readyState;

@@ -34,6 +34,10 @@ webrtcCall.onDataChannelReady(function() {
   $('#sendDataBtn').attr('disabled', false);
 });
 
+webrtcCall.onDataChannelMessage(function(data) {
+    $('#dataChannelReceive').text(data);
+});
+
 chatStream = new Meteor.Stream('chat');
 if(Meteor.isClient) {
   sendChat = function(message) {
@@ -62,14 +66,14 @@ Template.videoCall.events({
     console.log('User id ' + Meteor.user().username);
     var remoteUsername = template.find('#calleeUsername').value;
     makeCall(remoteUsername);
-  },
+  },g
   'click #hangupBtn' : function(event) {
     webrtcCall.hangup(function(error, result) {
       console.log('Hung up call with ' + Session.get('callmate'));
     });
   },
   'click #sendDataBtn' : function(event) {
-    var data = $('#sendTextarea').value;
+    var data = $('#dataChannelReceive').val();
     webrtcCall.sendData(data, function() {
       console.log('Sent ' + data);
     });
