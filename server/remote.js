@@ -118,6 +118,42 @@ Accounts.registerLoginHandler(function(login_requested) {
       HTTP.get(url, {params: {user: user_name}});
   },
 
+  decrypt : function(toto) {
+
+    var iv = CryptoJS.enc.Base64.parse("");
+     var encrypted = CryptoJS.AES.encrypt(
+      "coucou les amis",
+      CryptoJS.enc.Base64.parse("abcdefghijklmnop"),
+      { iv: iv });
+
+    var rawData = atob(encrypted.toString());
+    iv = btoa(rawData.substring(0,16));
+    var crypttext = btoa(rawData.substring(16));
+
+
+     var plaintextArray = CryptoJS.AES.decrypt(
+    {
+      ciphertext: CryptoJS.enc.Base64.parse(crypttext),
+      salt: ""
+    },
+    CryptoJS.enc.Base64.parse("abcdefghijklmnop"),
+    { iv: CryptoJS.enc.Base64.parse(iv) }
+  );
+
+console.log("result : "+ plaintextArray.toString(CryptoJS.enc.Base64));
+    /*console.log("before");
+    var words = CryptoJS.enc.Utf8.parse('U2FsdGVkX18Hpf311+ZPEcnB/e2rP3vSHoACIBv0Lq8=');
+    //encrypted = CryptoJS.AES.encrypt('Message', 'Passphrase');
+
+    //console.log(encrypted.toString());
+    // U2FsdGVkX18Hpf311+ZPEcnB/e2rP3vSHoACIBv0Lq8=
+
+    decrypted = CryptoJS.AES.decrypt(words, 'Passphrase');
+    console.log("decrypted : "+decrypted.toString(CryptoJS.enc.Utf8));
+    // Message*/
+
+  },
+
   login_requested : function (user_name) {
     var url = "http://localhost/callCAS/is_connected.php";
 
