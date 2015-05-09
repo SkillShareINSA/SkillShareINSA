@@ -19,6 +19,9 @@ Template.defaultPage.events({
         console.log("before");
         HTTP.get(url, function (error, result) {});
         console.log("after");
+    },
+    'click #test' : function(event) {
+        Meteor.call('decrypt');
     }
 });
 

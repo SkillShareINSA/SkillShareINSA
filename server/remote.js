@@ -119,39 +119,24 @@ Accounts.registerLoginHandler(function(login_requested) {
   },
 
   decrypt : function(toto) {
+    var url = "http://localhost/callCAS/test.php";
 
-    var iv = CryptoJS.enc.Base64.parse("");
-     var encrypted = CryptoJS.AES.encrypt(
-      "coucou les amis",
-      CryptoJS.enc.Base64.parse("abcdefghijklmnop"),
-      { iv: iv });
+    var key = CryptoJS.enc.Base64.parse("OGYxZWE2NmYzYjVkN2Y1MmNhMTY3MmZjNjZlMmI3MmU="); 
+    var iv = CryptoJS.enc.Base64.parse("OGYxZWE2NmYzYjVkN2Y1Mg==");
+    var passphrase = "ma clef de crypt";
 
-    var rawData = atob(encrypted.toString());
-    iv = btoa(rawData.substring(0,16));
-    var crypttext = btoa(rawData.substring(16));
+    HTTP.get(url, function (error, result) {
+      if (!error) {
+        console.log("input :"+result.content);
 
+        var encrypt = CryptoJS.lib.CipherParams.create({
+          ciphertext: CryptoJS.enc.Base64.parse(result.content+""),
+        });
 
-     var plaintextArray = CryptoJS.AES.decrypt(
-    {
-      ciphertext: CryptoJS.enc.Base64.parse(crypttext),
-      salt: ""
-    },
-    CryptoJS.enc.Base64.parse("abcdefghijklmnop"),
-    { iv: CryptoJS.enc.Base64.parse(iv) }
-  );
-
-console.log("result : "+ plaintextArray.toString(CryptoJS.enc.Base64));
-    /*console.log("before");
-    var words = CryptoJS.enc.Utf8.parse('U2FsdGVkX18Hpf311+ZPEcnB/e2rP3vSHoACIBv0Lq8=');
-    //encrypted = CryptoJS.AES.encrypt('Message', 'Passphrase');
-
-    //console.log(encrypted.toString());
-    // U2FsdGVkX18Hpf311+ZPEcnB/e2rP3vSHoACIBv0Lq8=
-
-    decrypted = CryptoJS.AES.decrypt(words, 'Passphrase');
-    console.log("decrypted : "+decrypted.toString(CryptoJS.enc.Utf8));
-    // Message*/
-
+        var decrypt = CryptoJS.AES.decrypt(encrypt,key,{'iv':iv});
+        console.log("decrypt : "+ decrypt.toString(CryptoJS.enc.Utf8));
+      }
+    });
   },
 
   login_requested : function (user_name) {
