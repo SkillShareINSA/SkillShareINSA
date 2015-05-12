@@ -278,6 +278,5 @@ function WebRTCCall () {
     isStarted = false;
     if (pc) pc.close();
     pc = null;
-    $('#' + localVideoId).attr('src', null);
   }
 }

@@ -1,13 +1,7 @@
 #videoCallPanel {
   margin-top : 20px;
 }
-#videoCallPanel video {
-  width : 106%;
-}
-#videoCallPanel video#remoteVideo {
-  background-color: #F4F4F4;
-  height : 270px;
-}
+
 #videoCallPanel .container-fluid {
   margin-top : 20px;
 }
@@ -27,7 +21,68 @@
   margin-top : 20px;
   border: 1px dotted;
 }
+#videoWindow #videoButtonPanel {
+  /*position: absolute;
+  bottom: 20px;
+  left : 33.33%;*/
+  margin-top : -60px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: rgba(21, 89, 46, 0.52);
+  padding : 10px;
+}
+
+#videoWindow video#remoteVideo {
+  background-color: #F4F4F4;
+  width : 100%;
+  max-height : 427px;
+}
+
+#videoWindow i {
+  padding: 2px 15px;
+  font-size: 25px;
+}
+
+#videoWindow i:hover {
+  color: #C1BBBB;
+}
+
+#videoWindow i.fa-phone {
+  padding: 2px 23px;
+  font-size: 28px;
+  margin-right: 10px;
+}
 .username {
 	font-weight: bold;
 	color : #D35353;
+}
+
+#videoWindow.full-screen {
+  z-index: 1001;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  max-height: 100%;
+}
+
+#videoWindow.full-screen video#remoteVideo {
+    height: 100%;
+    max-height: 100%;
+  }
+
+#videoWindow.full-screen #videoButtonPanel {
+  position: fixed;
+  z-index: 1002;
+  bottom : 20px;
+  width: 100%;
+}
+
+@media(min-width: @width-border) {
+
+  #videoWindow.full-screen #videoButtonPanel {
+    margin-left: 40%;
+    width: initial;
+  }
 }

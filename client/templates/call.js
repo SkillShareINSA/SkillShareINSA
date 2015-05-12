@@ -7,6 +7,13 @@ var callRefusedPopupId = "callRefusedPopup";
 webrtcCall.attachLocalVideo('localVideo');
 webrtcCall.attachRemoteVideo('remoteVideo');
 
+// Global call state
+callState = {
+  status  :  "idle",         // calling, idle
+  video   :  "off",          // on, off
+  audio   :  "off"           // on, off
+}
+
 webrtcCall.onCall(function(caller) {
   $('#' + acceptCallPopupId).modal('show').css("z-index", "1500");
 });
@@ -18,9 +25,12 @@ webrtcCall.onCallRefused(function(caller) {
 });
 webrtcCall.onRemoteHangup(function() {
   $('#' + hangupCallPopupId).modal('show').css("z-index", "1500");
+  $('#localVideo').attr('src', null);
+  $('#remoteVideo').attr('src', null);
 });
 webrtcCall.onHangup(function() {
   $('#localVideo').attr('src', null);
+  $('#remoteVideo').attr('src', null);
 });
 
 Template.videoCall.onRendered(function() {
@@ -30,22 +40,31 @@ Template.videoCall.onRendered(function() {
       // page called with style /call/userId
       if (self.data && self.data.userId) {
         makeCall(self.data.userId);
+        Session.set('callmate', self.data.userId);
       }
+    } else {
+      return false;
     }
   });
 });
 Template.videoCall.events({
   'click #callBtn' : function(event, template) {
-    console.log('User id ' + Meteor.user().username);
-    var remoteUsername = template.find('#calleeUsername').value;
-    makeCall(remoteUsername);
+    //console.log('User id ' + Meteor.user().username);
+    //var remoteUsername = template.find('#calleeUsername').value;
+    makeCall(Session.get('callmate'));
   },
   'click #hangupBtn' : function(event) {
     webrtcCall.hangup(function(error, result) {
-      console.log('Hung up call with ' + remoteUsername);
+      console.log('Hung up call with ' + Session.get('callmate'));
     });
   }
 });
+
+Template.videoWindow.events({
+  'click i.fa-arrows-alt' : function(event) {
+    $('#videoWindow').toggleClass('full-screen');
+  }
+})
 
 var makeCall = function(remoteUsername) {
   Session.set('callmate', remoteUsername);
