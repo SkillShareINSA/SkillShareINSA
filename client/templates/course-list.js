@@ -62,7 +62,7 @@ Template.courseList.events({
                 else {
                     console.log("Te fous pas de ma guele, je sais que t'es pas connecté !");
                 }
-                Router.go('/');
+                Router.go('/courses');
             });
             
         }
