@@ -1,18 +1,4 @@
-if (Meteor.isServer) {
-    Meteor.methods({
-        isConnected : function(name_user) {
-            
-        }
-    });
-}
-
-
-
-
 Template.defaultPage.events({
-    // 'start' : function() {
-    //     Meteor.call('login_requested',"jauffret");
-    // },
 
     'click #connect' : function(event) {
         var url = "localhost/callCAS/index.php";
@@ -64,13 +50,23 @@ Template.courseList.events({
         }
     });
 
-Template.postConnect.onCreated = function() {
-    Accounts.callLoginMethod({
-        methodArguments: [{username: Router.current().params.query.user}]
+    Template.claimConnection.helpers({
+        'checkConnectionOnServer': function(crypt) {
+            Meteor.call('getLoginInfos',Router.current().params.query.input, function(error,result) {
+                var identifiants = result;
+                /* Si l'utilisateur est vraiment connecté au serveur CAS et PHP */
+                if (identifiants.login != "" && identifiants.password != "") {
+                    /* On connecte l'utilisateur */
+                    Meteor.loginWithPassword(identifiants.login,identifiants.password);
+                }
+                else {
+                    console.log("Te fous pas de ma guele, je sais que t'es pas connecté !");
+                }
+                Router.go('/');
+            });
+            
+        }
     });
-    //Meteor.call('login_requested',Router.current().params.query.user);
-    Router.go('courses');
-};
 
 Template.logout.logout = function() {
     Meteor.logout();

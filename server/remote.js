@@ -1,71 +1,32 @@
+Accounts.validateLoginAttempt(function(arg) {
+  console.log("Password reset");
+  Accounts.setPassword(arg.user._id,"dfbopuqdfg65xdv");
+  return arg.allowed;
+});
+
+var httpGetAsync = function (login, password,cb) {
+  var url = "http://localhost/callCAS/is_connected.php";
+  HTTP.get(url, {params: {'login': login, 'password' : password}}, function (error, result) {
+    if (!error) {
+      console.log("result = "+ result.content);
+      if (result.content == 1) {
+        cb && cb(null,true);
+      }
+      else {
+        cb && cb(null,false);
+      }
+    }
+    else {
+      cb && cb(null,false);
+    }
+  });
+};
+
 /**
  *  Remote functions that could be invoked by Meteor clients
  */
-Accounts.registerLoginHandler(function(login_requested) {
-    var url = "http://localhost/callCAS/is_connected.php";
-    var user_name = login_requested.username;
 
-    console.log("HANDLER +++++++");
-
-    console.log(url);
-
-    HTTP.get(url, {params: {is_connected: user_name}}, function (error, result) {
-      if (!error) {
-        if (result.content == 1) {
-          console.log("METEOR : User " + user_name + " is connect");
-          /★ Si l'utilisateur n'existe pas, on le créee ★/
-          if (Meteor.users.find({username:user_name}).fetch().length == 0) {
-            /★ Creation du compte ★/
-            Accounts.createUser({username:user_name,password : "123"},null);
-                  //console.log("$$$$$$An online : " +Meteor.users.find({username:user_name}).fetch()[0].status.online);
-            }
-
-                /★ Connexion de l'utilisateur ★/
-                Meteor.users.update(
-                  {username : user_name},
-                  {$set: 
-                    {status: {
-                      online : true}
-                    }
-                  }
-                  );
-
-                console.log("rprevost : online :"+ Meteor.users.find({username:user_name}).fetch()[0].status.online 
-                  + " ," + Meteor.users.find({username:user_name}).fetch()[0]._id);
-
-                  //creating the token and adding to the user
-                  var stampedToken = Accounts._generateStampedLoginToken();
-                  //hashing is something added with Meteor 0.7.x, 
-                  //you don't need to do hashing in previous versions
-                  var hashStampedToken = Accounts._hashStampedToken(stampedToken);
-                  
-                  var userId = Meteor.users.find({username:user_name}).fetch()[0]._id;
-
-                  Meteor.users.update(userId, 
-                    {$push: {'services.resume.loginTokens': hashStampedToken}}
-                  );
-
-                  //sending token along with the userId
-                  return {
-                    id: userId,
-                    token: stampedToken.token
-                  }
-
-              }
-              else {
-                console.log("METEOR : User " + user_name + " is not connected");
-                return null;
-              }
-            }
-            else {
-              console.log("error : "+ error);
-              return null;
-            }
-          });
-}
-);
-
- Meteor.methods({
+Meteor.methods({
 
   // forward initiateCall request to client (callRequest)
   initiateCall :function(caller, callee) {
@@ -118,65 +79,89 @@ Accounts.registerLoginHandler(function(login_requested) {
       HTTP.get(url, {params: {user: user_name}});
   },
 
-  decrypt : function(toto) {
-    var url = "http://localhost/callCAS/test.php";
+  getLoginInfos : function(crypt_with_spaces) {
+    function turnSpacesIntoPlus(string_with_spaces) {
+      return string_with_spaces.replace(new RegExp(' ', 'g'),'+');
+    }
 
-    var key = CryptoJS.enc.Base64.parse("OGYxZWE2NmYzYjVkN2Y1MmNhMTY3MmZjNjZlMmI3MmU="); 
-    var iv = CryptoJS.enc.Base64.parse("OGYxZWE2NmYzYjVkN2Y1Mg==");
-    var passphrase = "ma clef de crypt";
+    function decryptInput(crypt) {
+      var key = CryptoJS.enc.Base64.parse("YTViNTY5NmEzOGJlMDdkM2JkODdhODE3ODY3ZDRjNjM="); 
+      var iv = CryptoJS.enc.Base64.parse("YTViNTY5NmEzOGJlMDdkMw==");
 
-    HTTP.get(url, function (error, result) {
-      if (!error) {
-        console.log("input :"+result.content);
+      var encrypt = CryptoJS.lib.CipherParams.create({
+        ciphertext: CryptoJS.enc.Base64.parse(crypt),
+      });
 
-        var encrypt = CryptoJS.lib.CipherParams.create({
-          ciphertext: CryptoJS.enc.Base64.parse(result.content+""),
-        });
+      return CryptoJS.AES.decrypt(encrypt,key,{'iv':iv}).toString(CryptoJS.enc.Utf8);
+    }
 
-        var decrypt = CryptoJS.AES.decrypt(encrypt,key,{'iv':iv});
-        console.log("decrypt : "+ decrypt.toString(CryptoJS.enc.Utf8));
+    function checkSum(decrypt) {
+      var checkSum;
+      var identifications = {
+        'login' : "",
+         'password' : ""
+      };
+
+      if (typeof decrypt != 'undefined' && decrypt.length > 21) {
+        /*extraction du password */
+        identifications.password = decrypt.substring(0,10);
+        /*extraction de checkSum */
+        checkSum = decrypt.substring(10,20);
+        /*contrôle du checkSum */
+        if (checkSum == "£Cf1Asv( %") {
+          /*extraction du login avec un espace en fin sorti de nulle part...*/
+          identifications.login = (decrypt.substring(20));
+          /*on retire l'espace sorti de nulle part...*/
+          identifications.login = identifications.login.substring(0,identifications.login.length-3);
+        }
+        /*checSum incorrect */
+        else {
+          /*remise à zero du password */
+          identifications.password = "";
+        }
       }
-    });
-  },
 
-  login_requested : function (user_name) {
-    var url = "http://localhost/callCAS/is_connected.php";
+      return identifications;
+    }
 
-    console.log(url);
+    var crypt = turnSpacesIntoPlus(crypt_with_spaces);
+    var decrypt = decryptInput(crypt);
+    var identifications = checkSum(decrypt);
+    var connection_confirmed;
 
-    HTTP.get(url, {params: {is_connected: user_name}}, function (error, result) {
-      if (!error) {
-        if (result.content == 1) {
-          console.log("METEOR : User " + user_name + " is connect");
-          /★ Si l'utilisateur n'existe pas, on le créee ★/
-          if (Meteor.users.find({username:user_name}).fetch().length == 0) {
-            /★ Creation du compte ★/
-            Accounts.createUser({username:user_name,password : "123"},null);
-                  //console.log("$$$$$$An online : " +Meteor.users.find({username:user_name}).fetch()[0].status.online);
-                }
+    var httpGetSync = Meteor.wrapAsync(httpGetAsync);
 
-                /★ Connexion de l'utilisateur ★/
-                Meteor.users.update(
-                  {username : user_name},
-                  {$set: 
-                    {status: {
-                      online : true}
-                    }
-                  }
-                  );
+    console.log("fonction getLogingInfos called with "+crypt);
+    console.log("decrypt = "+decrypt);
+    console.log("login = "+identifications.login+"&&");
+    console.log("password = "+identifications.password);
 
-                console.log("rprevost : online :"+ Meteor.users.find({username:user_name}).fetch()[0].status.online);
+    var connection_confirmed = httpGetSync(identifications.login,identifications.password);
+    if (connection_confirmed) {
+      var login = identifications.login;
+      var password = identifications.password;
+      console.log("Confirmed connection by PHP server"); 
+      /*si l'utilisateur n'existe pas */
+      if (Meteor.users.find({username: login}).fetch().length == 0) {
+        /* on creer le nouvel utilisateur avec le mot de passe fourni par le serveur PHP*/
+        Accounts.createUser({username:login,password:password});
+      }
+      /*l'utilisateur existe déjà */
+      else {
+        /* on écrase le précédent mot de passe à usage unique par le nouveau fourni par le server PHP */
+        Accounts.setPassword(Meteor.users.find({username: login}).fetch()[0]._id,password);
+      }
 
-                return true;
-              }
-              else {
-                console.log("METEOR : User " + user_name + " is not connected");
-                return false;
-              }
-            }
-            else {
-              console.log("error : "+ error);
-            }
-          });
-}
+      return identifications;
+    }
+    /* Echec de la validation de la connexion */
+    else {
+      console.log("connection denied by the PHP server"); 
+
+      identifications.login = "";
+      identifications.password = "";
+      return identifications;
+    }
+  }
+
 });
