@@ -21,9 +21,11 @@
             <li>
                 <a href=" ">Contact</a>
             </li>
+            {{#if currentUser}}
             <li>
-                <a href="logout">Logout</a>
+                <a href="http://localhost/callCAS/?logout" id="btn_logout">Logout</a>
             </li>
+            {{/if}}
         </ul>
     </div>
 
@@ -32,6 +34,9 @@
         $("#menu-toggle, #sidebar-opener").click(function (e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
+        });
+        $("#btn_logout").click(function(e) {
+            Meteor.logout();
         });
     </script>
 </template>

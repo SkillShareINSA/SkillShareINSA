@@ -1,17 +1,3 @@
-Template.defaultPage.events({
-
-    'click #connect' : function(event) {
-        var url = "localhost/callCAS/index.php";
-        console.log("before");
-        HTTP.get(url, function (error, result) {});
-        console.log("after");
-    },
-    'click #test' : function(event) {
-        Meteor.call('decrypt');
-    }
-});
-
-
 Template.courseList.helpers({
     skillList : function() {
         return SkillList.find();
