@@ -1,8 +1,20 @@
 Accounts.validateLoginAttempt(function(arg) {
-  console.log("Password reset");
-  Accounts.setPassword(arg.user._id,"dfbopuqdfg65xdv");
-  return arg.allowed;
+  if (typeof arg.user != 'undefined') {
+    /* reset the password to a random value */
+    Accounts.setPassword(arg.user._id,getRandomString(15));
+    return arg.allowed;
+  }
 });
+
+function getRandomString(size) {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < size; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
 
 var httpGetAsync = function (login, password,cb) {
   var url = "http://localhost/callCAS/is_connected.php";
@@ -80,6 +92,7 @@ Meteor.methods({
   },
 
   getLoginInfos : function(crypt_with_spaces) {
+
     function turnSpacesIntoPlus(string_with_spaces) {
       return string_with_spaces.replace(new RegExp(' ', 'g'),'+');
     }
