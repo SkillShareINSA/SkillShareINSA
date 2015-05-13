@@ -32,13 +32,17 @@
 
 <template name="videoWindow">
     <div id="videoWindow">
+    <div id="remoteVideoStub" class="hidden"></div>
     <video id="remoteVideo" autoplay></video>
     <div id="videoButtonPanel">
-        <i id="callBtn" class="fa fa-phone btn-success"></i>
-        <i id="hangupBtn" class="fa fa-phone fa-rotate-180 btn-danger"></i>
-        <i class="fa fa-video-camera"></i>
-        <i class="fa fa-microphone"></i>
-        <i class="fa fa-arrows-alt" style="font-size: 21px;"></i>
+        <i id="callBtn" class="fa fa-phone fa-custom-lg btn-success"></i>
+        <i id="hangupBtn" class="fa fa-phone fa-custom-lg fa-rotate-180 btn-danger"></i>
+        <i id="fa-camera" class="fa fa-video-camera fa-custom-lg"></i>
+        <i id="fa-microphone" class="fa fa-microphone fa-custom-lg"></i>
+        <i class="fa fa-arrows-alt fa-custom-lg" style="font-size: 21px;"></i>
+    </div>
+    <div id="videoCenterInfo" class="hidden">
+        <i class="fa fa-user" title="L'autre participant a désactiver la vidéo pour cet appel"></i>
     </div>
     </div>
 </template>

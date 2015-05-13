@@ -1,3 +1,4 @@
+@videoBackgroundColor : #F4F4F4;
 #videoCallPanel {
   margin-top : 20px;
 }
@@ -33,12 +34,12 @@
 }
 
 #videoWindow video#remoteVideo {
-  background-color: #F4F4F4;
+  background-color: @videoBackgroundColor;
   width : 100%;
   max-height : 427px;
 }
 
-#videoWindow i {
+i.fa-custom-lg {
   padding: 2px 15px;
   font-size: 25px;
 }
@@ -73,16 +74,42 @@
   }
 
 #videoWindow.full-screen #videoButtonPanel {
-  position: fixed;
   z-index: 1002;
   bottom : 20px;
   width: 100%;
 }
 
-@media(min-width: @width-border) {
+#videoWindow #remoteVideoStub {
+  background-color: @videoBackgroundColor;
+}
 
-  #videoWindow.full-screen #videoButtonPanel {
-    margin-left: 40%;
-    width: initial;
+#videoWindow #videoCenterInfo {
+  background-color: @videoBackgroundColor;
+  vertical-align: middle;
+  margin-top : -42%;
+  text-align: center;
+}
+
+#videoWindow #videoCenterInfo i {
+  font-size: 5em;
+}
+
+.fa-custom-camera-slash {
+  margin: 0 10px 0 18px;
+  background: url('/img/fa-custom-camera-slash-25x25.png') no-repeat;
+  vertical-align: sub;
+  box-sizing: border-box;
+  height: 25px;
+  width: 4px;
+  cursor : default;
+}
+
+@media(min-width: @width-border) {
+  #videoWindow #videoCenterInfo {
+    margin-top : -303px;
+  }
+
+  #videoWindow #videoCenterInfo i {
+    font-size: 10em;
   }
 }

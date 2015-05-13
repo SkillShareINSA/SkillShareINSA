@@ -67,6 +67,7 @@ Accounts.registerLoginHandler(function(login_requested) {
 
  Meteor.methods({
 
+  /* webrtc-call.js methods */
   // forward initiateCall request to client (callRequest)
   initiateCall :function(caller, callee) {
     console.log('Server : ' + caller + ' calling ' + callee);
@@ -111,6 +112,32 @@ Accounts.registerLoginHandler(function(login_requested) {
     Meteor.ClientCall.apply(receiverRecord._id, 'message', [message]);
     return msgLog;
   },
+
+  /* higher level methods (call.js) */
+  hideVideo : function(sender, receiver) {
+    var msgLog =  'Server : ' + sender + ' requests ' + receiver + ' to turn video off ';
+    console.log(msgLog);
+    var receiverRecord = Meteor.users.findOne({username : receiver});
+    Meteor.ClientCall.apply(receiverRecord._id, 'hideVideo', [sender]);
+  },
+  displayVideo : function(sender, receiver) {
+    var msgLog =  'Server : ' + sender + ' requests ' + receiver + ' to turn video on ';
+    console.log(msgLog);
+    var receiverRecord = Meteor.users.findOne({username : receiver});
+    Meteor.ClientCall.apply(receiverRecord._id, 'displayVideo', [sender]);
+  },   
+  muteAudio : function(sender, receiver) {
+    var msgLog =  'Server : ' + sender + ' requests ' + receiver + ' to mute sound ';
+    console.log(msgLog);
+    var receiverRecord = Meteor.users.findOne({username : receiver});
+    Meteor.ClientCall.apply(receiverRecord._id, 'mute', [sender]);
+  },
+  unmuteAudio : function(sender, receiver) {
+    var msgLog =  'Server : ' + sender + ' requests ' + receiver + ' to unmute sound ';
+    console.log(msgLog);
+    var receiverRecord = Meteor.users.findOne({username : receiver});
+    Meteor.ClientCall.apply(receiverRecord._id, 'unmute', [sender]);
+  }, 
 
   logout_requested : function (user_name) {
       var url = "http://localhost/callCAS/disconnect.php";
