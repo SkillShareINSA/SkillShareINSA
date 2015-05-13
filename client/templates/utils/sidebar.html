@@ -23,7 +23,7 @@
                 <a href="/contact">Contact</a>
             </li>
             <li>
-                <a href="/logout">Déconnecter</a>
+                <a href="http://localhost/callCAS/?logout" id="btn_logout">Logout</a>
             </li>
         </ul>
     </div>
@@ -33,6 +33,9 @@
         $("#menu-toggle, #sidebar-opener").click(function (e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
+        });
+        $("#btn_logout").click(function(e) {
+            Meteor.logout();
         });
     </script>
 </template>

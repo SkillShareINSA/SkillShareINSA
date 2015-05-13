@@ -1,5 +1,6 @@
 accounts-base@1.2.0
 accounts-password@1.1.1
+altapp:aes@1.2.0
 anti:methods@0.4.0
 autoupdate@1.2.1
 base64@1.0.3
@@ -45,7 +46,7 @@ mizzao:user-status@0.6.4
 mobile-status-bar@1.0.3
 mongo@1.1.0
 mongo-livedata@1.0.8
-nemo64:bootstrap@3.3.4_1
+nemo64:bootstrap@3.3.4_2
 nemo64:bootstrap-data@3.3.4_1
 npm-bcrypt@0.7.8_2
 observe-sequence@1.0.6
