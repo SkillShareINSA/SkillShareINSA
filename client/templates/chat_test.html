@@ -1,0 +1,12 @@
+<template name="chat_test">
+	<div class="row">
+		<textarea id="text_field" class="input-xlarge" rows='3'></textarea>
+		<textarea id="to_who" class="input-xlarge" rows='3'>laloy</textarea>
+		<textarea id="from_who" class="input-xlarge" rows='3'>rprevost</textarea>
+	</div>
+	<div class="row">
+		<button id="send_btn" type="button" class="btn btn-primary">Send</button>
+		<button id="start_receive" type="button" class="btn btn-primary">Start receive</button>
+	</div>
+	{{startGetMessages}}
+</template>
