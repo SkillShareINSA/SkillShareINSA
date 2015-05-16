@@ -22,9 +22,11 @@
             <li>
                 <a href="/contact">Contact</a>
             </li>
+            {{#if currentUser}}
             <li>
                 <a href="http://localhost/callCAS/?logout" id="btn_logout">Logout</a>
             </li>
+            {{/if}}
         </ul>
     </div>
 
