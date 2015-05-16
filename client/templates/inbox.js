@@ -1,11 +1,24 @@
 
+
   Template.inbox.helpers({
-      message : function() {
-          return Messages.find();
+      messages : function() {
+      return Messages.find({}, {sort: { to: 1 }});        
+    },
+
+      messagesReceived : function() {
+        var user = Meteor.users.find({_id : Meteor.userId()}).fetch()[0]
+        return Messages.find({to : user.username });
+      },
+
+      messagesSent : function() {
+        var user = Meteor.users.find({_id : Meteor.userId()}).fetch()[0]
+        return Messages.find({from : user.username });
       }
+
+
   });
 
-  Template.inbox.events({
+  Template.addMessageForm.events({
 
       "submit .messageForm": function (event) {
         // This function is called when the new task form is submitted
@@ -20,13 +33,9 @@
           textMessage : textMessage});
 
 
-        Messages.insert({
-          to: to,
-          from : from,
-          textMessage : textMessage
-        });
+       
 
-        console.log("Appel a la bdd messages" + Messages.find({}).fetch().toString())
+        //console.log("Appel a la bdd messages" + Messages.find({}).fetch());
 
       }
     });
