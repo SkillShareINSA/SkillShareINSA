@@ -1,19 +1,75 @@
 <template name="videoCall">
     <div id="videoCallPanel" >
-        {{>userList}}
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
-                    <video id="remoteVideo" autoplay></video>
+                <div class="col-md-8 col-md-offset-1">
+                    {{> videoWindow}}
                 </div>
                 <div class="col-md-4">
                     <video id="localVideo" autoplay muted></video>
                 </div>
             </div>
-            <div id="btnPanel">
-                <button id="callBtn" class="btn btn-info">Call</button>
-                <button id="hangupBtn" class="btn btn-default">Hang up</button>
+            <!--<div class="row">
+                <div id="btnPanel" class="col-md-4 col-md-offset-3">
+                    <input id="calleeUsername" type="text" class="form-control" placeholder="Identifiant de votre collègue"/>
+                </div>
+            </div>-->
+            <div class="row">
+                <div id="btnPanel" class="col-md-4 col-md-offset-3">
+                    
+                </div>
             </div>
+        <div id="userListPanel">
+        {{>userList}}
+        </div>
         </div>
     </div>
+
+    {{>acceptCallPopup}}
+    {{>hangupCallPopup}}
+    {{>callRefusedPopup}}
+</template>
+
+<template name="videoWindow">
+    <div id="videoWindow">
+    <div id="remoteVideoStub" class="hidden"></div>
+    <video id="remoteVideo" autoplay></video>
+    <div id="videoButtonPanel">
+        <i id="callBtn" class="fa fa-phone fa-custom-lg btn-success"></i>
+        <i id="hangupBtn" class="fa fa-phone fa-custom-lg fa-rotate-180 btn-danger"></i>
+        <i id="fa-camera" class="fa fa-video-camera fa-custom-lg"></i>
+        <i id="fa-microphone" class="fa fa-microphone fa-custom-lg"></i>
+        <i class="fa fa-arrows-alt fa-custom-lg" style="font-size: 21px;"></i>
+    </div>
+    <div id="videoCenterInfo" class="hidden">
+        <i class="fa fa-user" title="L'autre participant a désactiver la vidéo pour cet appel"></i>
+    </div>
+    </div>
+</template>
+
+<template name="acceptCallPopup">
+    {{#popup popupId=popupId title="Ding dong !"
+            confirmButton="Accepter" cancelButton="Refuser"}}
+        <div class="col-sm-10">
+            Vous avez un nouvel appel de <span class="username">{{caller}}</span>. Acceptez ?
+        </div>
+    {{/popup}}
+</template>
+
+<template name="callRefusedPopup">
+    {{#popup popupId=popupId title="Appel refusé"
+            confirmButton="OK"}}
+        <div class="col-sm-10">
+            <span class="username">{{callmate}}</span> n'est pas disponible. Essayez plus tard.
+        </div>
+    {{/popup}}
+</template>
+
+<template name="hangupCallPopup">
+    {{#popup popupId="hangupCallPopup" title="Appel terminé"
+            confirmButton="OK"}}
+        <div class="col-sm-10">
+            <span class="username">{{callmate}}</span> a raccroché.
+        </div>
+    {{/popup}}
 </template>

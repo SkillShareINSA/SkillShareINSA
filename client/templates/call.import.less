@@ -1,19 +1,115 @@
+@videoBackgroundColor : #F4F4F4;
 #videoCallPanel {
   margin-top : 20px;
 }
-#videoCallPanel video {
-  width : 81%;
-}
-#videoCallPanel video#remoteVideo {
-  background-color: rgb(153, 164, 160);
-}
+
 #videoCallPanel .container-fluid {
   margin-top : 20px;
 }
+#videoCallPanel .row {
+	margin-bottom: 15px;
+}
 #videoCallPanel video#localVideo {
-  background-color: #3c763d;
+  display: none;
+  background-color: #F1F1F1;
+}
+#videoCallPanel #userListPanel {
+  position: fixed;
+  bottom: 20px;
+  right : 30px;
+}
+#videoCallPanel #userList {
+  margin-top : 20px;
+  border: 1px dotted;
+}
+#videoWindow #videoButtonPanel {
+  /*position: absolute;
+  bottom: 20px;
+  left : 33.33%;*/
+  margin-top : -60px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: rgba(21, 89, 46, 0.52);
+  padding : 10px;
 }
 
-#videoCallPanel #userList {
-  border: 1px solid;
+#videoWindow video#remoteVideo {
+  background-color: @videoBackgroundColor;
+  width : 100%;
+  max-height : 427px;
+}
+
+i.fa-custom-lg {
+  padding: 2px 15px;
+  font-size: 25px;
+}
+
+#videoWindow i:hover {
+  color: #C1BBBB;
+}
+
+#videoWindow i.fa-phone {
+  padding: 2px 23px;
+  font-size: 28px;
+  margin-right: 10px;
+}
+.username {
+	font-weight: bold;
+	color : #D35353;
+}
+
+#videoWindow.full-screen {
+  z-index: 1001;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  max-height: 100%;
+}
+
+#videoWindow.full-screen video#remoteVideo {
+    height: 100%;
+    max-height: 100%;
+  }
+
+#videoWindow.full-screen #videoButtonPanel {
+  z-index: 1002;
+  bottom : 20px;
+  width: 100%;
+}
+
+#videoWindow #remoteVideoStub {
+  background-color: @videoBackgroundColor;
+}
+
+#videoWindow #videoCenterInfo {
+  background-color: @videoBackgroundColor;
+  vertical-align: middle;
+  margin-top : -42%;
+  text-align: center;
+}
+
+#videoWindow #videoCenterInfo i {
+  font-size: 5em;
+}
+
+.fa-custom-camera-slash {
+  margin: 0 10px 0 18px;
+  background: url('/img/fa-custom-camera-slash-25x25.png') no-repeat;
+  vertical-align: sub;
+  box-sizing: border-box;
+  height: 25px;
+  width: 4px;
+  cursor : default;
+}
+
+@media(min-width: @width-border) {
+  #videoWindow #videoCenterInfo {
+    margin-top : -303px;
+  }
+
+  #videoWindow #videoCenterInfo i {
+    font-size: 10em;
+  }
 }

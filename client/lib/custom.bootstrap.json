@@ -2,7 +2,7 @@
   "normalize":            true,
   "print":                false,
 
-  "scaffolding":          false,
+  "scaffolding":          true,
   "type":                 true,
   "code":                 false,
   "grid":                 true,

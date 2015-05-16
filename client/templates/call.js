@@ -1,211 +1,229 @@
-Template.videoCall.onCreated(function() {
-    Meteor.ClientCall.setClientId(Meteor.userId());
+var webrtcCall = new WebRTCCall();
+
+var acceptCallPopupId = "acceptCallPopup";
+var hangupCallPopupId = "hangupCallPopup";
+var callRefusedPopupId = "callRefusedPopup";
+
+webrtcCall.attachLocalVideo('localVideo');
+webrtcCall.attachRemoteVideo('remoteVideo');
+
+// Global call state
+var callState = {
+  status  :  "idle",         // calling, idle
+  video   :  "off",          // on, off
+  audio   :  "off"           // on, off
+}
+
+function resetCallState() {
+  callState.status = "idle";
+  callState.video = "off";
+  callState.audio = "off";
+  $('i#fa-camera').removeClass('fa-video-camera-slash')
+            .addClass('fa-video-camera');
+  $('i#fa-microphone').addClass('fa-microphone')
+      .removeClass('fa-microphone-slash'); 
+}
+
+function callingCallState() {
+  callState.status = "calling";
+  callState.video = "on";
+  callState.audio = "on";
+  $('i#fa-camera').removeClass('fa-video-camera-slash')
+            .addClass('fa-video-camera');
+  $('i#fa-microphone').addClass('fa-microphone')
+      .removeClass('fa-microphone-slash'); 
+}
+
+webrtcCall.onCall(function(caller) {
+  $('#' + acceptCallPopupId).modal('show').css("z-index", "1500");
 });
-var isInitiator = false;
-var isChannelReady = false;
-var isStarted = false;
-// WebRTC data structures
-// Streams
-var localStream;
-var remoteStream;
-// PeerConnection
-var pc;
-// PeerConnection ICE protocol configuration (either Firefox or Chrome)
-var pc_config = webrtcDetectedBrowser === 'firefox' ?
-{'iceServers':[{'url':'stun:23.21.150.121'}]} : // IP address
-{'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]};
-var pc_constraints = {
-  'optional': [
-    {'DtlsSrtpKeyAgreement': true}
-  ]};
-var sdpConstraints = {};
-var constraints = {video: true, audio: true};
-var remoteUsername;
-// Opera --> getUserMedia
-// Chrome --> webkitGetUserMedia
-// Firefox --> mozGetUserMedia
-navigator.getUserMedia = navigator.getUserMedia ||
-navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+webrtcCall.onGetUserMediaError(function() {
+  console.log('Yeehaw');
+});
+webrtcCall.onCallRefused(function(caller) {
+  $('#' + callRefusedPopupId).modal('show').css("z-index", "1500");
+});
+webrtcCall.onRemoteHangup(function() {
+  $('#' + hangupCallPopupId).modal('show').css("z-index", "1500");
+  $('#localVideo').attr('src', null);
+  $('#remoteVideo').attr('src', null);
+  $('#videoCenterInfo').addClass('hidden');
+  resetCallState();
+});
+webrtcCall.onHangup(function() {
+  $('#localVideo').attr('src', null);
+  $('#remoteVideo').attr('src', null);
+  $('#videoCenterInfo').addClass('hidden');
+  resetCallState();
+});
+
+Template.videoCall.onRendered(function() {
+  var self = this;
+  Tracker.autorun(function() {
+    if (Session.get('users_loaded')) {
+      // page called with style /call/userId
+      if (self.data && self.data.userId) {
+        makeCall(self.data.userId);
+        Session.set('callmate', self.data.userId);
+      }
+    } else {
+      return false;
+    }
+  });
+});
 Template.videoCall.events({
-  'click #callBtn' : function(event) {
-      console.log('User id ' + Meteor.user().username);
-      isInitiator = true;
-      remoteUsername = Meteor.user().username == 'an' ? 'chao' : 'an';
-      Meteor.call('initiateCall', Meteor.user().username, remoteUsername,
-        function(error, result) {
-          if (!error) {
-            console.log(result);
-            navigator.getUserMedia(constraints, getUserMediaHandler, getUserMediaErrorHandler);
-            isChannelReady = true;
-          } else {
-            console.log(error.error);
-          }
-        });
+  'click #callBtn' : function(event, template) {
+    //console.log('User id ' + Meteor.user().username);
+    //var remoteUsername = template.find('#calleeUsername').value;
+    makeCall(Session.get('callmate'));
   },
   'click #hangupBtn' : function(event) {
-      Meteor.call('terminateCall', Meteor.user().username, remoteUsername,
-        function(error, result) {
-          console.log('Hung up call with ' + remoteUsername);
-          stop();
-        });
+    webrtcCall.hangup(function(error, result) {
+      console.log('Hung up call with ' + Session.get('callmate'));
+    });
   }
 });
 
-
-/**
- * Remote functions that could be invoked by Meteor server
- */
-Meteor.ClientCall.methods({
-  callRequest : function(caller) {
-    console.log('Received callRequest : ' + caller + ' want to call. Accept ?');
-    isChannelReady = true;
-    navigator.getUserMedia(constraints, getUserMediaHandler, getUserMediaErrorHandler);
-    console.log('Getting user media with constraints', constraints);
-    Meteor.call('acceptCall', caller);
-    remoteUsername = caller;
+Template.videoWindow.events({
+  'click i.fa-arrows-alt' : function(event) {
+    $('#videoWindow').toggleClass('full-screen');
   },
-
-  log : function (array){
-    console.log.apply(console, array);
+  'click i#fa-microphone' : function(event) {
+    $(event.target).toggleClass('fa-microphone')
+      .toggleClass('fa-microphone-slash'); 
+      /*
+    document.getElementById('remoteVideo').muted =
+     (document.getElementById('remoteVideo').muted) ? 
+     false : true;*/
+      if (callState.audio === "on") {
+        Meteor.call('muteAudio', Meteor.user().username, Session.get('callmate'), function(err, res) {
+        if (!err) {
+          callState.audio = "off";
+          $(event.target).removeClass('fa-video-microphone')
+            .addClass('fa-microphone-slash');
+        }
+      });   
+     } else {
+        Meteor.call('unmuteAudio', Meteor.user().username, Session.get('callmate'), function(err, res) {
+        if (!err) {
+          callState.audio = "on";
+          $(event.target).addClass('fa-video-microphone')
+            .removeClass('fa-microphone-slash');
+        }
+      });
+     }
   },
-  message : function (message){
-
-    if (message === 'got user media') {
-      console.log('Received message:', message);
-      checkAndStart();
-    } else if (message.type === 'offer') {
-      console.log('Received message : offer');
-      if (!isInitiator && !isStarted) {
-        checkAndStart();
-      }
-      pc.setRemoteDescription(new RTCSessionDescription(message));
-      doAnswer();
-    } else if (message.type === 'answer' && isStarted) {
-      console.log('Received message : answer');
-      pc.setRemoteDescription(new RTCSessionDescription(message));
-    } else if (message.type === 'candidate' && isStarted) {
-      console.log('Received message : candidate');
-      var candidate = new RTCIceCandidate({sdpMLineIndex:message.label,
-        candidate:message.candidate});
-      pc.addIceCandidate(candidate);
-    } else if (message === 'bye' && isStarted) {
-      handleRemoteHangup();
+  'click i#fa-camera' : function(event) {
+    if (callState.video === "on") {
+      Meteor.call('hideVideo', Meteor.user().username, Session.get('callmate'), function(err, res) {
+        if (!err) {
+          callState.video = "off";
+          $(event.target).removeClass('fa-video-camera')
+            .addClass('fa-custom-camera-slash');
+        }
+      });
+    } else {
+      Meteor.call('displayVideo', Meteor.user().username, Session.get('callmate'), function(err, res) {
+        if (!err) {
+          callState.video = "on";
+          $(event.target).addClass('fa-video-camera')
+            .removeClass('fa-custom-camera-slash');
+        }
+      });
     }
   }
+})
+
+var makeCall = function(remoteUsername) {
+  Session.set('callmate', remoteUsername);
+  console.log('Calling ' + remoteUsername);
+  webrtcCall.call(remoteUsername, function(result) {
+    if (result.error) {
+      console.log(result.error);
+    } else {
+      callingCallState();
+    }
+  });
+  //$('#calleeUsername').hide();
+  //$('#callBtn').hide();
+}
+
+Template.acceptCallPopup.helpers({
+  caller : function() {
+    return Session.get('caller');
+  },
+  popupId : function() {
+    return acceptCallPopupId;
+  }
 });
 
-// getUserMedia() handlers...
-function getUserMediaHandler(stream) {
-  console.log('getUserMedia succeded with constraints', constraints);
-  localStream = stream;
-  var localVideo = document.querySelector('#localVideo');
-  attachMediaStream(localVideo, stream);
-  console.log('Adding local stream.');
-  sendMessage('got user media');
-}
-function getUserMediaErrorHandler(error){
-  console.log('navigator.getUserMedia error: ', error);
-}
-// Channel negotiation trigger function
-function checkAndStart() {
-  if (!isStarted && typeof localStream != 'undefined' && isChannelReady) {
-    createPeerConnection();
-    isStarted = true;
-    doCall();
-  }
-}
-// PeerConnection management...
-function createPeerConnection() {
-  try {
-    pc = new RTCPeerConnection(pc_config, pc_constraints);
-    pc.addStream(localStream);
-    pc.onicecandidate = handleIceCandidate;
-    console.log('Created RTCPeerConnnection with:\n' +
-    ' config: \'' + JSON.stringify(pc_config) + '\';\n' +
-    ' constraints: \'' + JSON.stringify(pc_constraints) + '\'.');
-  } catch (e) {
-    console.log('Failed to create PeerConnection, exception: ' + e.message);
-    alert('Cannot create RTCPeerConnection object.');
-    return;
-  }
-  pc.onaddstream = handleRemoteStreamAdded;
-  pc.onremovestream = handleRemoteStreamRemoved;
-}
-// ICE candidates management
-function handleIceCandidate(event) {
-  console.log('handleIceCandidate event: ', event);
-  if (event.candidate) {
-    sendMessage({
-      type: 'candidate',
-      label: event.candidate.sdpMLineIndex,
-      id: event.candidate.sdpMid,
-      candidate: event.candidate.candidate});
-  } else {
-    console.log('End of candidates.');
-  }
-}
-// 2. Client-->Server
-// Send message to the other peer via the signaling server
-function sendMessage(message){
-  console.log('Sending message: ');
-  Meteor.call('sendMessage', Meteor.user().username, remoteUsername, message,
-    function(error, result) {
-      console.log(result);
+Template.acceptCallPopup.events({
+  'click #confirmButton' : function() {
+    webrtcCall.acceptCall(function(caller) {
+      $('#' + acceptCallPopupId).modal('hide');
+      Session.set('callmate', caller);
+      callingCallState();
     });
+  },
+  'click #cancelButton' : function() {
+    webrtcCall.refuseCall(function(caller) {
+      $('#' + acceptCallPopupId).modal('hide');
+    })
+  }
+});
+
+Template.callRefusedPopup.helpers({
+  popupId : function() {
+    return callRefusedPopupId;
+  }
+});
+
+Template.callRefusedPopup.events({
+  'click #confirmButton' : function() {
+    $('#' + callRefusedPopupId).modal('hide');
+  }
+});
+
+Template.hangupCallPopup.events({
+  'click #confirmButton' : function() {
+    $('#' + hangupCallPopupId).modal('hide');
+  }
+});
+
+// define helper for conveniently get other participant username
+// without template-specific helpers
+Handlebars.registerHelper('callmate',function(input){
+  return Session.get("callmate");
+});
+
+var credentialCheck = function(sender) {
+  if (Session.get("callmate") !== sender
+    || callState.status !== "calling") {
+    throw "Unable to perform operation";
+  }
 }
 
-// Remote stream handlers...
-function handleRemoteStreamAdded(event) {
-  console.log('Remote stream added.');
-  var remoteVideo = document.querySelector('#remoteVideo');
-  attachMediaStream(remoteVideo, event.stream);
-  console.log('Remote stream attached!!.');
-  remoteStream = event.stream;
-}
-function handleRemoteStreamRemoved(event) {
-  console.log('Remote stream removed. Event: ', event);
-}
-window.onbeforeunload = function(e){
-  if (isStarted)
-    hangup();
-}
+// Disable video 
+Meteor.ClientCall.methods({
+  hideVideo : function(sender) {
+    credentialCheck(sender);
+    $('#remoteVideoStub').removeClass('hidden').height($('video#remoteVideo').height());
+    $('video#remoteVideo').addClass('hidden');
+    $('#videoCenterInfo').removeClass('hidden');
+  },
+  displayVideo : function(sender) {
+    credentialCheck(sender);
+    $('#remoteVideoStub').addClass('hidden');
+    $('video#remoteVideo').removeClass('hidden');
+    $('#videoCenterInfo').addClass('hidden');
+  },
+  mute : function(sender) {
+    credentialCheck(sender);
+    document.getElementById('remoteVideo').muted = true;
+  }, 
+  unmute : function(sender) {
+    credentialCheck(sender);
+     document.getElementById('remoteVideo').muted = false;
+  }
+});
 
-
-// Create Offer
-function doCall() {
-  console.log('Creating Offer...');
-  pc.createOffer(setLocalAndSendMessage, onSignalingError, sdpConstraints);
-}
-// Signaling error handler
-function onSignalingError(error) {
-  console.log('Failed to create signaling message : ' + error);
-}
-// Create Answer
-function doAnswer() {
-  console.log('Sending answer to peer.');
-  pc.createAnswer(setLocalAndSendMessage, onSignalingError, sdpConstraints);
-}
-// Success handler for both createOffer()
-// and createAnswer()
-function setLocalAndSendMessage(sessionDescription) {
-  pc.setLocalDescription(sessionDescription);
-  sendMessage(sessionDescription);
-}
-
-// Clean-up functions...
-function hangup() {
-  console.log('Hanging up.');
-  stop();
-  sendMessage('bye');
-}
-function handleRemoteHangup() {
-  console.log('Session terminated.');
-  stop();
-  isInitiator = false;
-}
-function stop() {
-  isStarted = false;
-  if (pc) pc.close();
-  pc = null;
-  $('#localVideo').attr('src', null);
-}

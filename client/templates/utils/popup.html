@@ -1,0 +1,23 @@
+<template name="popup">
+    <div class="modal fade" id="{{popupId}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="btn" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{title}}</h4>
+                </div>
+                <div class="modal-body container-fluid">
+                    <div class="row">
+                        {{> UI.contentBlock}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {{#if cancelButton}}
+                    <button id="cancelButton" type="button" class="btn btn-default" data-dismiss="modal">{{cancelButton}}</button>
+                    {{/if}}
+                    <button id="confirmButton" type="button" class="btn btn-primary">{{confirmButton}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

@@ -9,19 +9,13 @@
 #courseListPanel h2 {
   margin: 0 0 20px;
 }
-#addCourseBtn, .courseListTable {
+#addCourseBtn, #courseListTable {
   margin-right: 20px;
-}
-#courseListPanel table td {
-  -webkit-transition: all 0.2s;
-  -moz-transition: all 0.2s;
-  -ms-transition: all 0.2s;
-  -o-transition: all 0.2s;
-  transition: all 0.2s;
 }
 
 #courseListPanel table td:hover {
-  background-color: rgba(184, 225, 193, 0.53);
+  color: white;
+  background-color: #D35353;
   cursor: pointer;
   font-size: 20px;
 }
@@ -44,9 +38,17 @@
 }
 
 #modal-skillNameInput {
-  height: 18px;
+  height: 28px;
 }
 
 .section_teachers {
   margin-left: 30px;
+}
+
+.hidden-info {
+  margin : 0 0 5px 29px;
+  padding-left: 12px;
+  border-left : 5px outset #D35353;
+  border-bottom: 1px solid #D35353;
+  display : none;
 }
