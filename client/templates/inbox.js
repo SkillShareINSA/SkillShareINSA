@@ -6,26 +6,24 @@
     },
 
       messagesReceived : function() {
-        Console.log("messagesReceived : Id non nul");
+        console.log("messagesReceived : Id non nul");
         if(Meteor.userId() != null){
-          var user = Meteor.users.find({_id : Meteor.userId()}).fetch()[0]
           //Console.log(user);
-          return Messages.find({to : user.username }, {sort: { datesort: -1 }});
+          return Messages.find({to : Meteor.user().username }, {sort: { datesort: -1 }});
           }
         else
-          Console.log("messageReceived : Id nul");
+          console.log("messageReceived : Id nul");
           return [];
       },
 
       messagesSent : function() {
         if(Meteor.userId() != null){
-          Console.log("messageSent : Id non nul");
-          var user = Meteor.users.find({_id : Meteor.userId()}).fetch()[0]
+          console.log("messageSent : Id non nul");
           //Console.log(user);
-          return Messages.find({from : user.username }, {sort: { datesort: -1 }});
+          return Messages.find({from : Meteor.user().username }, {sort: { datesort: -1 }});
           }
         else
-          Console.log("messageSent :Id nul");
+          console.log("messageSent :Id nul");
           return [];    
       }
 
@@ -34,18 +32,18 @@
 
   Template.addMessageForm.events({
 
-      "submit .messageForm": function (event) {
+      "click #sendBtn": function (event) {
         // This function is called when the new task form is submitted
-        Console.log("Entrée dans la fonction de submit");
-        var to = event.target.to.value; 
-        var textMessage = event.target.textMessage.value;
+        console.log("Entrée dans la fonction de submit");
+        var to = document.getElementById('to').value; 
+        var textMessage = document.getElementById('textMessage').value;
         var from = Meteor.user().username;
         console.log("To : "+to+" Message : "+textMessage+" from : "+from);
         var dateObject = new Date();
         //var date = dateObject.getDate()+"/"+(dateObject.getMonth() + 1) + "/" + dateObject.getFullYear() + " " + dateObject.getHours() + ":" + dateObject.getMinutes() + ":" + dateObject.getSeconds();
         var date =  dateObject.toUTCString();
-        var milli = dateObect.parse();
-        Console.log("Avant appel methode insertion");
+        var milli = dateObject.getTime();
+        console.log("Avant appel methode insertion");
         Meteor.call("insertMessage",{
           to: to,
           from : from,
@@ -55,9 +53,7 @@
           });
 
 
-        Console.log("Après appel methode insertion");
-
-
+        console.log("Après appel methode insertion");
         //console.log("Appel a la bdd messages" + Messages.find({}).fetch());
 
       }
