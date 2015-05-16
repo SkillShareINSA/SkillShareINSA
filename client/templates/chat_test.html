@@ -1,0 +1,38 @@
+<template name="chat_test">
+	<div class="container">
+		<div id="container" class="col-xs-4">
+			<div id="panel_messages" class="row">
+				{{#each messages}}
+				<p class="message">
+					<p class="name_user">
+						{{#if userIsSender sender_id}}
+							Moi :
+						{{else}}
+							{{sender_name}} :
+						{{/if}}
+					</p>
+					<p class="content">{{content}}</p>
+					<p class="date">{{getDate date}}</p>
+					<hr/>
+				</p>
+				{{/each}}
+			</div>
+
+			<div id="panel_write" class="row">
+				<textarea id="textearea" class="form-control" rows="3"></textarea>
+			</div>
+
+			<div id="panel_controls" class="row" >
+				<span class="checkbox">
+				    <label>
+				      <input id="enter_activated" type="checkbox"> Appuyer sur Entrée pour envoyer
+				    </label>
+				</span>
+				<button id="send_btn" type="button" class="btn btn-primary pull-right">Envoyer</button>
+			</div>
+		</div>
+	</div>
+
+<br>
+	<textarea id="to_who" class="input-xlarge" rows='3'>tiKmsb5TTscF5JA6a</textarea>
+</template>

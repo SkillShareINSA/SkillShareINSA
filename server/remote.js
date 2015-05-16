@@ -73,5 +73,4 @@ Meteor.methods({
     var receiverRecord = Meteor.users.findOne({username : receiver});
     Meteor.ClientCall.apply(receiverRecord._id, 'unmute', [sender]);
   }
-}
 });
