@@ -3,18 +3,18 @@
 		<div id="container" class="col-xs-4">
 			<div id="panel_messages" class="row">
 				{{#each messages}}
-				<p class="message {{getMessageType sender_id}}">
-					<p>
+				<p class="message">
+					<p class="name_user">
 						{{#if userIsSender sender_id}}
 							Moi :
 						{{else}}
 							{{sender_name}} :
 						{{/if}}
 					</p>
-					<p>{{content}}</p>
+					<p class="content">{{content}}</p>
 					<p class="date">{{getDate date}}</p>
+					<hr/>
 				</p>
-				<p style="height:0px;margin:0px;padding:0px"></p>
 				{{/each}}
 			</div>
 
@@ -35,5 +35,4 @@
 
 <br>
 	<textarea id="to_who" class="input-xlarge" rows='3'>tiKmsb5TTscF5JA6a</textarea>
-	
 </template>
