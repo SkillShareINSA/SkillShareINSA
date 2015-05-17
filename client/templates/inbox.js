@@ -14,6 +14,14 @@
       return Messages.find({}, {sort: { to: 1 }});        
     },
 
+      numberMessagesReceived : function() {
+      return Messages.find({to : Meteor.user().username }).count();
+      },
+
+      numberMessagesSent : function() {
+      return Messages.find({from : Meteor.user().username }).count();
+      },
+
       messagesReceived : function() {
         console.log("messagesReceived : Id non nul");
         if(Meteor.userId() != null){

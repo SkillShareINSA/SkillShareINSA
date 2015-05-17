@@ -24,8 +24,8 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#sendNew" aria-controls="sendNew" role="tab" data-toggle="tab">Envoyer</a></li>
-        <li role="presentation"><a href="#sent" aria-controls="sent" role="tab" data-toggle="tab">Messages envoyés</a></li>
-        <li role="presentation"><a href="#received" aria-controls="received" role="tab" data-toggle="tab">Messages reçus</a></li>
+        <li role="presentation"><a href="#sent" aria-controls="sent" role="tab" data-toggle="tab">Messages envoyés({{numberMessagesSent}})</a></li>
+        <li role="presentation"><a href="#received" aria-controls="received" role="tab" data-toggle="tab">Messages reçus ({{numberMessagesReceived}})</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -35,28 +35,64 @@
             </div>
             <div role="tabpanel" class="tab-pane fade" id="sent">
                 <div class="container-fluid">
-                    <ul>
                         {{#each messagesSent}}
-                            <li>
-                            <p>To : {{to}}</p>
-                            <p>Message : {{textMessage}}</p>
-                            <p>Date : {{date}}</p>
-                            </li>
+
+
+                            <table class="table">
+
+                            <tr> 
+                                <td>To : </td>
+                                <td>{{to}} </td>
+                            </tr>
+
+
+                            <tr> 
+                                <td>Date : </td>
+                                <td>{{date}} </td>
+                            </tr>
+
+
+                            <tr> 
+                                <td>Message : </td>
+                                <td>{{textMessage}} </td>
+                            </tr>
+                            </table>
+
+                    
                         {{/each}}
-                    </ul>
+                    
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="received">
                  <div class="container-fluid">
-                    <ul>
+                        
                         {{#each messagesReceived}}
-                            <li>
-                            <p>From : {{from}} </p>
-                            <p>Message : {{textMessage}}</p>
-                            <p>Date : {{date}}</p>
-                            </li>
+
+                         <table class="table">
+
+                       
+                            <tr> 
+                                <td>From : </td>
+                                <td>{{from}} </td>
+                            </tr>
+
+
+                            <tr> 
+                                <td>Date : </td>
+                                <td>{{date}} </td>
+                            </tr>
+
+
+                            <tr> 
+                                <td>Message : </td>
+                                <td>{{textMessage}} </td>
+                            </tr>
+
+                        
+                        </table>
+
                         {{/each}}
-                    </ul>
+                   
                 </div>       
             </div>
         </div>
