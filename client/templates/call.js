@@ -50,12 +50,6 @@ webrtcCall.onRemoteHangup(function() {
   $('#videoCenterInfo').addClass('hidden');
   resetCallState();
 });
-webrtcCall.onHangup(function() {
-  $('#localVideo').attr('src', null);
-  $('#remoteVideo').attr('src', null);
-  $('#videoCenterInfo').addClass('hidden');
-  resetCallState();
-});
 
 Template.videoCall.onRendered(function() {
   var self = this;
@@ -79,6 +73,10 @@ Template.videoCall.events({
   },
   'click #hangupBtn' : function(event) {
     webrtcCall.hangup(function(error, result) {
+      $('#localVideo').attr('src', null);
+      $('#remoteVideo').attr('src', null);
+      $('#videoCenterInfo').addClass('hidden');
+      resetCallState();
       console.log('Hung up call with ' + Session.get('callmate'));
     });
   }
@@ -89,12 +87,6 @@ Template.videoWindow.events({
     $('#videoWindow').toggleClass('full-screen');
   },
   'click i#fa-microphone' : function(event) {
-    $(event.target).toggleClass('fa-microphone')
-      .toggleClass('fa-microphone-slash'); 
-      /*
-    document.getElementById('remoteVideo').muted =
-     (document.getElementById('remoteVideo').muted) ? 
-     false : true;*/
       if (callState.audio === "on") {
         Meteor.call('muteAudio', Meteor.user().username, Session.get('callmate'), function(err, res) {
         if (!err) {

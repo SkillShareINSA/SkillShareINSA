@@ -29,7 +29,6 @@ function WebRTCCall () {
 
   var onNewCallCallback;
   var onCallRefusedCallback;
-  var onHangupCallback;
   var onRemoteHangupCallback;
   var onGetUserMediaErrorCallback;
 
@@ -92,8 +91,7 @@ function WebRTCCall () {
   };
 
   this.hangup = function(callback) {
-    Meteor.call('terminateCall', Meteor.user().username, remoteUsername, callback);
-    stop();
+    hangup(callback);
   };
 
   this.onCallRefused = function(callback) {
@@ -103,10 +101,6 @@ function WebRTCCall () {
   this.onGetUserMediaError = function (callback) {
     onGetUserMediaErrorCallback = callback;
   }
-
-  this.onHangup = function(callback) {
-    onHangupCallback = callback;
-  };
 
   this.onRemoteHangup = function(callback) {
     onRemoteHangupCallback = callback;
@@ -262,11 +256,10 @@ function WebRTCCall () {
   }
 
   // Clean-up functions...
-  function hangup() {
+  function hangup(callback) {
     console.log('Hanging up.');
+    Meteor.call('terminateCall', Meteor.user().username, remoteUsername, callback ? callback : null);
     stop();
-    sendMessage('bye');
-    onHangupCallback();
   }
   function handleRemoteHangup() {
     console.log('Session terminated.');
