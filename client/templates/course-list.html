@@ -32,32 +32,8 @@
         </div>
         </div>
     </div>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="btn" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Nouvelle matière</h4>
-                </div>
-                <div class="modal-body container-fluid">
-                    <div class="row">
-                    <form class="form-horizontal">
-                        <div class="form-group form-group-sm">
-                            <label class="col-sm-2 control-label" for="modal-skillNameInput">Nom</label>
-                            <div class="col-sm-5">
-                                <input class="form-control" type="text" id="modal-skillNameInput" placeholder="">
-                            </div>
-                        </div>
-                    </form>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer la fenêtre</button>
-                    <button id="modal-addCourseBtn" type="button" class="btn btn-primary">Ajouter</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
+    {{> addCoursePopup}}
 </template>
 
 <template name="claimConnection">
@@ -111,4 +87,19 @@
             </div>
         </div>
     </div>
+</template>
+
+<template name="addCoursePopup">
+    {{#popup popupId="addCoursePopup" title="Nouvelle matière"
+            cancelButton="Fermer la fenêtre" confirmButton="Ajouter"}}
+        <div class="col-sm-1"></div>
+        <form class="form-horizontal">
+            <div class="form-group form-group-sm">
+                <label class="col-sm-2 control-label" for="modal-skillNameInput">Nom</label>
+                <div class="col-sm-5">
+                    <input class="form-control" type="text" id="modal-skillNameInput" placeholder="">
+                </div>
+            </div>
+        </form>
+    {{/popup}}
 </template>

@@ -31,7 +31,7 @@ Template.courseList.helpers({
 
 Template.courseList.events({
     'click #addCourseBtn' : function(event) {
-        $('#myModal').modal('show').css("z-index", "1500");
+        $('#addCoursePopup').modal('show').css("z-index", "1500");
     },
     'click .removeBtn' : function(event) {
         var skillName = $(event.target).parent().text();
@@ -42,11 +42,14 @@ Template.courseList.events({
     },
     'click #courseListTable td' : function(event) {
         $(event.target).parent().next('.hidden-info').toggle();
-    },
-    'click #modal-addCourseBtn' : function(event) {
+    }
+});
+
+Template.addCoursePopup.events({
+    'click #confirmButton' : function() {
         var skillName = $('#modal-skillNameInput').val();
         SkillList.insert({name : skillName});
-        $('#myModal').modal('hide');
+        $('#addCoursePopup').modal('hide');
     }
 });
 
