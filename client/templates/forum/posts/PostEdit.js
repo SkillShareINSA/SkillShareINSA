@@ -27,8 +27,9 @@ Template.PostEdit.events({
 
         if (confirm("Delete this post?")) {
             var currentPostId = this._id;
+            var skill_id = SkillList.findOne({name:Posts.findOne({_id :this._id}).matiereName})._id;
             Posts.remove(currentPostId);
-            Router.go('Aide');
+            Router.go('/courses/matierePost/'+skill_id);
         }
     }
 });
