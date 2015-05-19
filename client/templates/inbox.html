@@ -14,7 +14,7 @@
                 </form>
             </div>
         </div>
-    </div>  
+    </div> 
 </template>
 
 
@@ -25,7 +25,7 @@
         <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#sendNew" aria-controls="sendNew" role="tab" data-toggle="tab">Envoyer</a></li>
         <li role="presentation"><a href="#sent" aria-controls="sent" role="tab" data-toggle="tab">Messages envoyés({{numberMessagesSent}})</a></li>
-        <li role="presentation"><a href="#received" aria-controls="received" role="tab" data-toggle="tab">Messages reçus ({{numberMessagesReceived}})</a></li>
+        <li role="presentation"><a href="#received"  id="messReceived" aria-controls="received" role="tab" data-toggle="tab">Messages reçus ({{numberMessagesReceived}})</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -97,6 +97,31 @@
             </div>
         </div>
     </div>
+     {{>userUnknownPopup}}
+     {{>messageSentPopup}}
+
+
+
+     <script>
+        $()
+     </script>
 </template>
 
+<template name="userUnknownPopup">
+    {{#popup popupId="userUnknownPopup" title="Attention"
+            confirmButton="Ok" }}
+        <div class="col-sm-10">
+           Utilisateur destinataire inconnu !
+        </div>
+    {{/popup}}
+</template>
+
+<template name="messageSentPopup">
+    {{#popup popupId="messageSentPopup" title="Bravo"
+            confirmButton="Ok" }}
+        <div class="col-sm-10">
+           Votre message a bien été envoyé !
+        </div>
+    {{/popup}}
+</template>
 

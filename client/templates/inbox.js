@@ -47,9 +47,15 @@
 
   });
 
+Template.inbox.events({
 
+  "click #messReceived": function(event){
+    console.log("clic");
+    Meteor.call("resetUser",{userId : Meteor.userId()});
 
+  }
 
+});
 
 
 Template.addMessageForm.events({
@@ -65,24 +71,48 @@ Template.addMessageForm.events({
       document.getElementById("textMessage").value = "";
       document.getElementById("to").value = "";
 
+      var distant_user = Meteor.users.find({username : to}).fetch()[0];
+      if(typeof distant_user != "undefined"){
+        console.log("To : "+to+" Message : "+textMessage+" from : "+from);
+        var dateObject = new Date();
+        //var date = dateObject.getDate()+"/"+(dateObject.getMonth() + 1) + "/" + dateObject.getFullYear() + " " + dateObject.getHours() + ":" + dateObject.getMinutes() + ":" + dateObject.getSeconds();
+        var date =  dateObject.toUTCString();
+        var milli = dateObject.getTime();
+        //console.log("Avant appel methode insertion");
+        Meteor.call("insertMessage",{
+          to: to,
+          from : from,
+          textMessage : textMessage,
+          date : date,
+          datesort : milli 
+          });
 
-      console.log("To : "+to+" Message : "+textMessage+" from : "+from);
-      var dateObject = new Date();
-      //var date = dateObject.getDate()+"/"+(dateObject.getMonth() + 1) + "/" + dateObject.getFullYear() + " " + dateObject.getHours() + ":" + dateObject.getMinutes() + ":" + dateObject.getSeconds();
-      var date =  dateObject.toUTCString();
-      var milli = dateObject.getTime();
-      console.log("Avant appel methode insertion");
-      Meteor.call("insertMessage",{
-        to: to,
-        from : from,
-        textMessage : textMessage,
-        date : date,
-        datesort : milli 
-        });
+        Meteor.call("incrementUser",{distant_user: distant_user});
 
+        $('#messageSentPopup').modal('show').css("z-index", "1500");
 
-      console.log("Après appel methode insertion");
+        }
+        else{
+          console.log("Utilisateur inexistant");
+          $('#userUnknownPopup').modal('show').css("z-index", "1500");
+
+        }
+      //console.log("Après appel methode insertion");
       //console.log("Appel a la bdd messages" + Messages.find({}).fetch());
 
     }
   });
+
+Template.userUnknownPopup.events({
+  'click #confirmButton' : function() {
+      $('#userUnknownPopup').modal('hide');
+    }
+});
+
+
+
+Template.messageSentPopup.events({
+  'click #confirmButton' : function() {
+      $('#messageSentPopup').modal('hide');
+    }
+});

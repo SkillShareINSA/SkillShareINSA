@@ -8,7 +8,7 @@
                 <i>Partagez vos compétences</i>
             </li>
             <li>
-                <a href="/inbox">Messages</a>
+                <a href="/inbox">Messages ({{nbUnreadMessages}}) </a>
             </li>
             <li>
                 <a href="/courses">Matières</a>
@@ -37,5 +37,17 @@
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
+/*
+        UI.registerHelper('nbUnreadMessages', function() {
+            if(this.userId != null){
+                console.log("On est bien rentré dans le helper");
+                return Meteor.user().nb_unread_messages;
+            }
+        
+            else
+            return -1;
+        });*/
+       
+
     </script>
 </template>
