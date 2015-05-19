@@ -33,6 +33,11 @@
                 <a href="http://localhost/callCAS/?logout" id="btn_logout">Logout</a>
             </li>
             {{/if}}
+            {{#if currentUser}}
+            <li>
+                <a href="http://localhost:3000/" id="btn_logout_debbug">Logout DEBBUG user</a>
+            </li>
+            {{/if}}
         </ul>
     </div>
 
@@ -44,6 +49,11 @@
         });
         $("#btn_logout").click(function(e) {
             Meteor.logout();
+            console.log("LOGGED OUT");
+        });
+        $("#btn_logout_debbug").click(function(e) {
+            Meteor.logout();
+            console.log("LOGGED OUT DEBBUG USER");
         });
     </script>
 </template>
