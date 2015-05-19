@@ -1,0 +1,20 @@
+/**
+ * Created by chao on 15-5-17.
+ */
+Template.listeTuteur.helpers({
+    liste:function(){
+        console.log(this._id);
+        return SkillList.find({id:this.id}).teachers;
+    }
+})
+
+Template.listeTuteur.events({
+    'click #etreUnTuteur' : function(event) {
+        console.log('insert');
+        Meteor.call('addTuteur',this._id);
+       // SkillList.update(this._id, {
+         //   $addToSet: {teachers: this.userId},
+        //})
+    }
+
+})

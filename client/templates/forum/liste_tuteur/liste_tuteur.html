@@ -1,0 +1,37 @@
+<template name="listeTuteur">
+
+    <div class="container">
+        <div id="title">
+            <div id="matiere">{{matierePage}}</div>
+        </div>
+        <header class="navbar navbar-default" role="navigation">
+            <div class="collapse navbar-collapse" id="navigation">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{pathFor 'matierePost'}}">Post</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{pathFor 'listeTuteur'}}">Tuteur</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{pathFor 'matierePost'}}">Info</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{pathFor 'matierePost'}}">Partage</a></li>
+                </ul>
+            </div>
+        </header>
+        <div id="liste">
+            <div>
+    {{#if currentUser}} <button id="etreUnTuteur" class="btn btn-default">devenir un tuteur</button>{{/if}}
+              </div>
+            <br>
+            {{#each teachers}}
+                <div class="post">
+                    <div class="post-content">
+                        <h3>{{this}}</h3>
+                    </div>
+                </div>
+                {{/each}}
+        </div>
+    </div>
+</template>
