@@ -50,8 +50,8 @@
 Template.inbox.events({
 
   "click #messReceived": function(event){
-    console.log("clic");
-    Meteor.call("resetUser",{userId : Meteor.userId()});
+    //console.log("clic");
+    Meteor.call("resetUser",{});
 
   }
 
@@ -61,45 +61,40 @@ Template.inbox.events({
 Template.addMessageForm.events({
 
     "click #sendBtn": function (event) {
-      // This function is called when the new task form is submitted
-      console.log("Entrée dans la fonction de submit");
+
+      //console.log("Entrée dans la fonction de submit");
+
+      //recupération des informations du form
       var to = document.getElementById('to').value; 
       var textMessage = document.getElementById('textMessage').value;
       var from = Meteor.user().username;
+      var dateObject = new Date();
+      var date =  dateObject.toUTCString();
+      var milli = dateObject.getTime(); 
 
-
+      //reset du form
       document.getElementById("textMessage").value = "";
       document.getElementById("to").value = "";
 
+      //envoi du message
+
       var distant_user = Meteor.users.find({username : to}).fetch()[0];
       if(typeof distant_user != "undefined"){
-        console.log("To : "+to+" Message : "+textMessage+" from : "+from);
-        var dateObject = new Date();
-        //var date = dateObject.getDate()+"/"+(dateObject.getMonth() + 1) + "/" + dateObject.getFullYear() + " " + dateObject.getHours() + ":" + dateObject.getMinutes() + ":" + dateObject.getSeconds();
-        var date =  dateObject.toUTCString();
-        var milli = dateObject.getTime();
-        //console.log("Avant appel methode insertion");
+        console.log("Appel a la méthode insertMessage");
         Meteor.call("insertMessage",{
           to: to,
           from : from,
           textMessage : textMessage,
           date : date,
           datesort : milli 
-          });
-
-        Meteor.call("incrementUser",{distant_user: distant_user});
-
+        });
         $('#messageSentPopup').modal('show').css("z-index", "1500");
-
-        }
-        else{
-          console.log("Utilisateur inexistant");
-          $('#userUnknownPopup').modal('show').css("z-index", "1500");
-
-        }
-      //console.log("Après appel methode insertion");
-      //console.log("Appel a la bdd messages" + Messages.find({}).fetch());
-
+      }
+      else{
+        console.log("Utilisateur inexistant");
+        $('#userUnknownPopup').modal('show').css("z-index", "1500");
+      }
+ 
     }
   });
 
