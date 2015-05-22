@@ -112,6 +112,7 @@ Template.videoWindow.events({
           callState.video = "off";
           $(event.target).removeClass('fa-video-camera')
             .addClass('fa-custom-camera-slash');
+          $('#localVideo').addClass('hidden');
         }
       });
     } else {
@@ -120,6 +121,7 @@ Template.videoWindow.events({
           callState.video = "on";
           $(event.target).addClass('fa-video-camera')
             .removeClass('fa-custom-camera-slash');
+            $('#localVideo').removeClass('hidden');
         }
       });
     }
