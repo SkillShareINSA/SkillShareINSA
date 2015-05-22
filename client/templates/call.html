@@ -16,8 +16,9 @@
                     
                 </div>
             </div>
-        <div id="userListPanel">
-        {{>userList}}
+        <div id="rightPanel">
+            {{> userList}}
+            {{> client_chat}}
         </div>
         </div>
     </div>
@@ -29,8 +30,8 @@
 
 <template name="videoWindow">
     <div id="videoWindow">
-    <div id="remoteVideoStub" class="hidden"></div>
     <video id="localVideo" autoplay muted></video>
+    <div id="remoteVideoStub" class="hidden"></div>
     <video id="remoteVideo" autoplay></video>
     <div id="videoButtonPanel">
         <i id="callBtn" class="fa fa-phone fa-custom-lg btn-success"></i>

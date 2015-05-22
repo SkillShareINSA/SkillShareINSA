@@ -16,15 +16,16 @@
   position: relative;
   float: right;
 }
-#videoCallPanel #userListPanel {
-  position: fixed;
-  bottom: 20px;
-  right : 30px;
+#videoCallPanel #rightPanel {
+  width: 100%;
+  bottom : 0;
+  right : 0;
 }
 #videoCallPanel #userList {
   margin-top : 20px;
   border: 1px dotted;
 }
+
 #videoWindow #videoButtonPanel {
   margin-top : -60px;
   text-align: center;
@@ -115,5 +116,10 @@ i.fa-custom-lg {
   }
   #videoWindow.full-screen video#remoteVideo {
     margin-right: 135px;
+  }
+
+  #videoCallPanel #rightPanel {
+    width: 230px;
+    position: fixed;
   }
 }
