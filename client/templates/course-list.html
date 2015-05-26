@@ -11,7 +11,7 @@
             <tbody>
                 {{#each skillList}}
                     <tr>
-                        <td>{{name}}<i class="removeBtn fa fa-times pull-right"></i></td>
+                        <td><a href="{{pathFor 'matierePost'}}">{{name}}</a><i class="removeBtn fa fa-times pull-right"></i></td>
                     </tr>
                     <div class="hidden-info">
                             Lien Moodle : <a href="http://moodle.insa-toulouse.fr/course/view.php?id={{_id}}">moodle.insa-toulouse.fr/course/view.php?id={{_id}}</a>

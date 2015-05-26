@@ -1,0 +1,14 @@
+<template name="matierePostsList">
+    <div class="posts">
+      {{#each posts}}
+        {{> PostItem}}
+      {{/each}}
+    </div>
+
+    {{#if currentUser}}
+        {{> PostSubmit}}
+    {{else}}
+        <p>Please log in to leave a comment.</p>
+    {{/if}}
+
+</template>

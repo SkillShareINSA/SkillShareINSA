@@ -1,0 +1,24 @@
+<template name="matierePost">
+        <div id="title">
+        <div id="matiere">{{matierePage}}</div>
+        </div>
+        <header class="navbar navbar-default" role="navigation">
+            <div class="collapse navbar-collapse" id="navigation">
+                <ul class="nav navbar-nav">
+                 <li><a href="{{pathFor 'matierePost'}}">Post</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{pathFor 'listeTuteur'}}">Tuteur</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{pathFor 'matierePost'}}">Info</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{pathFor 'matierePost'}}">Partage</a></li>
+                </ul>
+            </div>
+        </header>
+        <div id="main">
+          {{> matierePostsList}}
+        </div>
+</template>

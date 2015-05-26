@@ -47,3 +47,44 @@ if (Meteor.users.find().count() === 0) {
     }
   }
 });
+
+if (Posts.find().count() === 0) {
+    var now = new Date().getTime();
+
+
+    var telescopeId = Posts.insert({
+        title: 'Introducing Telescope',
+        author: 'an',
+        matiereName:'Ada 1ère année',
+        submitted: new Date(now - 7 * 3600 * 1000)
+    });
+
+    Comments.insert({
+        postId: telescopeId,
+        author: 'an',
+        submitted: new Date(now - 5 * 3600 * 1000),
+        body: 'Interesting project Sacha, can I get involved?'
+    });
+
+    Comments.insert({
+        postId: telescopeId,
+        author: 'an',
+        submitted: new Date(now - 3 * 3600 * 1000),
+        body: 'You sure can Tom!'
+    });
+
+    Posts.insert({
+        title: 'Meteor',
+        matiereName:'Ada 1ère année',
+        url: 'http://meteor.com',
+        submitted: new Date(now - 10 * 3600 * 1000)
+    });
+
+    Posts.insert({
+        title: 'The Meteor Book',
+        matiereName:'Ada 1ère année',
+        url: 'http://themeteorbook.com',
+        submitted: new Date(now - 12 * 3600 * 1000)
+    });
+}
+
