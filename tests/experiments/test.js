@@ -1,6 +1,7 @@
 var path = require('path');
 var Nightmare = require('nightmare');
 var chai = require('chai');
+var should = require('should');
 
 var expect = chai.expect;
 var should = chai.should;
@@ -10,7 +11,7 @@ describe('DOM Testing', function () {
  
     var url = 'http://localhost:3000/call';
  
-    describe('Call page', function () {
+    describe('Video call page', function () {
         describe('not logged in', function() {
             it('shouldn\'t display remote video', function (done) {
                 new Nightmare()
@@ -25,6 +26,7 @@ describe('DOM Testing', function () {
             it('take a screenshot', function(done) {
                 //this.timeout(30000);
                 new Nightmare()
+                    .viewport(800, 600)
                     .goto(url)
                     .wait()
                     .screenshot('screenshots/call-not-logged-in.png')
@@ -36,17 +38,50 @@ describe('DOM Testing', function () {
             it('should display remote video', function(done) {
                 new Nightmare()
                     .goto(url)
-                    .click('#connectButton')
+                    .click('#login-sign-in-link')
+                    .type('input#login-username', 'user_test')
+                    .type('input#login-password', '123456')
+                    .click('#login-buttons-password')
                     .wait()
-                    .screenshot('screenshots/CAS.png')
-                    .authentication('hadang','--jPtf')
+                    .screenshot('screenshots/call-logged-in.png')
                     .evaluate(function() {
-                        return document.getElementByTagName('video');
+                        return document.getElementById('remoteVideo');
                     }, function(result) {
-                        expect(result).eql('VIDEO');
+                        expect(result.nodeName).eql('VIDEO');
                     })
                     .run(done);
             });
+            it('should have two video tags', function(done) {
+                 new Nightmare()
+                    .goto(url)
+                    .click('#login-sign-in-link')
+                    .type('input#login-username', 'user_test')
+                    .type('input#login-password', '123456')
+                    .click('#login-buttons-password')
+                    .wait()
+                    .evaluate(function() {
+                        return document.getElementsByTagName('video');
+                    }, function(result) {
+                        result.length.should.be.exactly(2);
+                    })
+                    .run(done);
+            })
+            it('should go full screen when clicking on resize', function(done) {
+                   new Nightmare()
+                    .goto(url)
+                    .click('#login-sign-in-link')
+                    .type('input#login-username', 'user_test')
+                    .type('input#login-password', '123456')
+                    .click('#login-buttons-password')
+                    .wait()
+                    .click('i.fa-arrows-alt')
+                    .evaluate(function() {
+                        return document.getElementById('videoWindow');
+                    }, function(result) {
+                        result.className.indexOf('full-screen').should.be.above(-1);
+                    })
+                    .run(done);
+            })
         });
     });
  /*
