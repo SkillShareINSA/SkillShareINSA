@@ -30,7 +30,7 @@
             </li>
             {{#if currentUser}}
             <li>
-                <a href="" id="btn_logout">Logout</a>
+                <a href="http://localhost/callCAS/?logout=cccccc">Logout</a>
             </li>
             {{/if}}
             {{#if currentUser}}
@@ -46,17 +46,6 @@
         $("#menu-toggle, #sidebar-opener").click(function (e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
-        });
-        
-        $("#btn_logout").click(function(e) {
-            Meteor.logout();
-            console.log("LOGGED OUT");
-            document.location.href="http://localhost/callCAS/?logout";
-        });
-
-        $("#btn_logout_debbug").click(function(e) {
-            Meteor.logout();
-            console.log("HELLO YOU!!!!!!!!!!");
         });
     </script>
 </template>
