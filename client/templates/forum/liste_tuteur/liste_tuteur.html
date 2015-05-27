@@ -12,18 +12,18 @@
                 <ul class="nav navbar-nav">
                     <li><a href="{{pathFor 'listeTuteur'}}">Tuteur</a></li>
                 </ul>
+
               <!--  <ul class="nav navbar-nav">
                     <li><a href="{{pathFor 'matierePost'}}">Info</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
                     <li><a href="{{pathFor 'matierePost'}}">Partage</a></li>
                 </ul>-->
+                <ul></ul>
+                {{#if currentUser}} <button id="etreUnTuteur" class="btn btn-default pull-right">devenir un tuteur</button>{{/if}}
             </div>
         </header>
         <div id="liste">
-            <div>
-    {{#if currentUser}} <button id="etreUnTuteur" class="btn btn-default">devenir un tuteur</button>{{/if}}
-              </div>
             <br>
             {{#each teachers}}
                 <div class="post">

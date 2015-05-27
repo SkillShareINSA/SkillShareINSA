@@ -6,3 +6,10 @@ Template.matierePost.helpers({
         console.log(this._id);
         return Session.get('matierePage'); }
 })
+
+Template.matierePost.events({
+    'click #etreUnTuteur' : function(event) {
+        console.log('insert');
+        Meteor.call('addTuteur',this._id);
+    }
+})

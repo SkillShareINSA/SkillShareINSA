@@ -12,9 +12,5 @@ Template.listeTuteur.events({
     'click #etreUnTuteur' : function(event) {
         console.log('insert');
         Meteor.call('addTuteur',this._id);
-       // SkillList.update(this._id, {
-         //   $addToSet: {teachers: this.userId},
-        //})
     }
-
 })
