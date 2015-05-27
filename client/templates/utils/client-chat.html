@@ -1,5 +1,4 @@
-<template name="chat_test">
-	<div class="container">
+<template name="client_chat">
 		<div id="container" class="col-xs-4">
 			<div id="panel_messages" class="row">
 				{{#each messages}}
@@ -23,16 +22,12 @@
 			</div>
 
 			<div id="panel_controls" class="row" >
-				<span class="checkbox">
+				<div class="checkbox">
 				    <label>
 				      <input id="enter_activated" type="checkbox"> Appuyer sur Entrée pour envoyer
 				    </label>
-				</span>
+				</div>
 				<button id="send_btn" type="button" class="btn btn-primary pull-right">Envoyer</button>
 			</div>
 		</div>
-	</div>
-
-<br>
-	<textarea id="to_who" class="input-xlarge" rows='3'>tiKmsb5TTscF5JA6a</textarea>
 </template>

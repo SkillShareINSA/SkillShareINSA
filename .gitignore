@@ -2,6 +2,10 @@
 *.iml
 .idea/
 
+## Sublime
+*.sublime-project
+*.sublime-workspace
+
 # Less target stylesheets
 client/lib/custom.bootstrap.less
 client/lib/custom.bootstrap.mixins.import.less
