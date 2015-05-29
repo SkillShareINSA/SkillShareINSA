@@ -10,7 +10,7 @@ L'application web innovatitve construite par les étudiants pour les étudiants.
 * L'échange des messages qui ressemble à un gmail (ou thunderbird) intégré
 * **L'appel vidéo, purement peer-to-peer**. Profitez-en pour échanger en live avec un tuteur, ou avec les amis (on ne surveille pas)
 
-## Intéressé pour contribuer ?
+## Intéressé à contribuer ?
 
 Cloner le repo : 
 ```sh
