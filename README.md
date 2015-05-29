@@ -1,24 +1,24 @@
-# skillshareinsa.io 
+# skillshareinsa.io
 © INSAT 2015
 
-A hyper-cool website for INSAiens to study, chat, and discuss things that matter, via video conferencing. 
+L'application web innovatitve construite par les étudiants pour les étudiants.
 
+## Qu'est-ce qui est offert ?
 
-### Deployment instructions :
+* Un forum dédié à chaque matière à l'INSA. Le complément manquant de moodle pour discuter et partager les documents au sujet de la matière.
+* L'opportunité de partager ses connaissances acquis pendant les longues années à l'INSA. Se candidater comme tuteur (expert) d'une matière !
+* L'échange des messages qui ressemble à un gmail (ou thunderbird) intégré
+* **L'appel vidéo, purement peer-to-peer**. Profitez-en pour échanger en live avec un tuteur, ou avec les amis (on ne surveille pas)
 
- * Install meteor :
-```sh
+## Intéressé pour contribuer ?
+
+Installer meteor :
 curl https://install.meteor.com/ | sh
-```
- * Run the app :
-
-```sh
+Lancer l'appli :
 cd project_directory
 meteor
-```
+Faire les modifs, et nous envoyer des Pull Requests.
 
-### Demo :
+Version béta (démo) : http://utmd7CZAYL5Ze378L.meteor.com
 
-A demo version is available [here](http://utmd7CZAYL5Ze378L.meteor.com). Any comment or bug found is greatly appreciated :).
-
-
+Les commentaires, reports d'erreur ou félicitations sont tous bien appréciés !
