@@ -44,51 +44,6 @@
     {{logout}}
 </template>
 
-
-<template name="seekHelp">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <h2 class="pull-left">Rechercher de l'aide</h2>
-                
-                <div class="courseListTable">
-                    <table class="table">
-                        <tbody>
-                            {{#each skillList}}
-                                <tr><td>
-                                    <h3>{{name}}</h3>
-                                    <div class="section_teachers">
-                                    {{#each teachers}}
-                                    
-                                    <div>
-                                        <span class="glyphicon glyphicon-user" style="color:green"></span>
-                                        {{this}}
-                                        
-                                            
-                                        <button type="button" class="btn btn-default right-align" aria-label="Left Align">
-                                            Appeller
-                                        </button>
-
-                                        <button type="button" class="btn btn-default right-align" aria-label="Left Align">
-                                            Send a message
-                                        </button>
-                                    </div>
-                                    
-                                    {{/each}}
-                                </div>
-                                </td>
-                                </tr>
-                            {{/each}}
-
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
-
 <template name="addCoursePopup">
     {{#popup popupId="addCoursePopup" title="Nouvelle matière"
             cancelButton="Fermer la fenêtre" confirmButton="Ajouter"}}
