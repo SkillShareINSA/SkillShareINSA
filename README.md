@@ -12,13 +12,22 @@ L'application web innovatitve construite par les étudiants pour les étudiants.
 
 ## Intéressé pour contribuer ?
 
+Cloner le repo : 
+```sh
+git clone https://github.com/SkillShareINSA/SkillShareINSA.git
+```
 Installer meteor :
+```sh
 curl https://install.meteor.com/ | sh
+```
 Lancer l'appli :
+``` sh
 cd project_directory
 meteor
-Faire les modifs, et nous envoyer des Pull Requests.
+```
+Faire tes modifs, et nous envoyer des Pull Requests.
 
+<hr/>
 Version béta (démo) : http://utmd7CZAYL5Ze378L.meteor.com
 
 Les commentaires, reports d'erreur ou félicitations sont tous bien appréciés !
