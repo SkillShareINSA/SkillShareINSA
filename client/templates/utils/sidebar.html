@@ -19,9 +19,6 @@
                 <a href="/call">Conversation</a>
             </li>
             <li>
-                <a href="/help">Aide</a>
-            </li>
-            <li>
                 <a href="/about">A propos</a>
             </li>
             <li>
@@ -29,12 +26,12 @@
             </li>
             {{#if currentUser}}
             <li>
-                <a href="http://localhost/callCAS/?logout=cccccc">Logout</a>
+                <a href="{{SkillShareConfig.serverProtocol}}://{{SkillShareConfig.serverAddr}}/callCAS/?logout">Logout</a>
             </li>
             {{/if}}
             {{#if currentUser}}
             <li>
-                <a href="http://localhost:3000/" id="btn_logout_debbug">Logout DEBBUG user</a>
+                <a href="{{SkillShareConfig.serverProtocol}}://{{SkillShareConfig.serverAddr}}:{{SkillShareConfig.serverPort}}" id="btn_logout_debbug">Logout DEBBUG user</a>
             </li>
             {{/if}}
         </ul>
