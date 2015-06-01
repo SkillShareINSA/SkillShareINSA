@@ -36,12 +36,21 @@ function callingCallState() {
 
 webrtcCall.onCall(function(caller) {
   $('#' + acceptCallPopupId).modal('show').css("z-index", "1500");
+  enableWaitingState();
 });
 webrtcCall.onGetUserMediaError(function() {
-  console.log('Yeehaw');
+  alert('L\'application a besoin d\'accéder au webcam. Veuillez réessayer.');
+  stopWaitingState();
+});
+webrtcCall.calleeGotUserMedia(function(caller) {
+  stopWaitingState();
+});
+webrtcCall.callerGotUserMedia(function(caller) {
+  stopWaitingState();
 });
 webrtcCall.onCallRefused(function(caller) {
   $('#' + callRefusedPopupId).modal('show').css("z-index", "1500");
+  stopWaitingState();
 });
 webrtcCall.onRemoteHangup(function() {
   $('#' + hangupCallPopupId).modal('show').css("z-index", "1500");
@@ -133,8 +142,10 @@ var makeCall = function(remoteUsername) {
   console.log('Calling ' + remoteUsername);
   webrtcCall.call(remoteUsername, function(result) {
     if (result.error) {
-      console.log(result.error);
+      stopWaitingState();
+      alert('Appeler ' + remoteUsername + ' : ' + result.error);
     } else {
+      enableWaitingState();
       callingCallState();
     }
   });
@@ -162,6 +173,7 @@ Template.acceptCallPopup.events({
   'click #cancelButton' : function() {
     webrtcCall.refuseCall(function(caller) {
       $('#' + acceptCallPopupId).modal('hide');
+      stopWaitingState();
     })
   }
 });
@@ -221,3 +233,14 @@ Meteor.ClientCall.methods({
   }
 });
 
+function enableWaitingState() {
+  var videoCenterInfo = $('#videoCenterInfo').removeClass('hidden');
+  videoCenterInfo.find('i.fa-spinner').removeClass('hidden');
+  videoCenterInfo.find('i.fa-user').addClass('hidden');
+}
+
+function stopWaitingState() {
+  var videoCenterInfo = $('#videoCenterInfo').addClass('hidden');
+  videoCenterInfo.find('i.fa-spinner').addClass('hidden');
+  videoCenterInfo.find('i.fa-user').removeClass('hidden');
+}
