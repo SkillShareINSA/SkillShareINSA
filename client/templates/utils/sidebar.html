@@ -11,9 +11,13 @@
                 <a href="/inbox">
                     Messages 
                     <span class="fa fa-inbox" aria-hidden="true"></span>
-                    <div id="badge">  
-                        <p>{{nbUnreadMessages}}</p>
-                    </div>
+                    {{#if currentUser}}
+                        <div id="badge">  
+                            <p>{{nbUnreadMessages}}</p>
+                        </div>
+                    {{else}}
+                        <div id="barre"></div>
+                    {{/if}}
                 </a>
             </li>
             <li>
@@ -43,7 +47,7 @@
             </li>
             {{#if currentUser}}
             <li>
-                <a href="{{SkillShareConfig.serverProtocol}}://{{SkillShareConfig.serverAddr}}/callCAS/?logout">Déconnexion
+                <a style="color:#D35353" href="{{SkillShareConfig.serverProtocol}}://{{SkillShareConfig.serverAddr}}/callCAS/?logout">Déconnexion
                     <span class="fa fa-power-off" aria-hidden="true"></span> 
                 </a>
             </li>
