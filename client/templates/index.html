@@ -4,10 +4,22 @@
         <div class="row">
             <div class="col-lg-12">
                 {{> loginButtons}}
-                
-                <a href="{{SkillShareConfig.serverProtocol}}://{{SkillShareConfig.serverAddr}}/callCAS"><button type="button" class="btn btn-default right-align" aria-label="Left Align" id="button_connect">
-                    Se connecter
-                </button></a>
+
+                <div id="div_centered">
+                    <img src="/img/logo.png" style="height"/>
+                    <p>SkillShareINSA</p>
+                    <p>Partagez vos connaissances</p>
+                </div>
+
+                {{#if currentUser}}
+                    <a href="{{SkillShareConfig.serverProtocol}}://{{SkillShareConfig.serverAddr}}/callCAS?logout"><button type="button" class="btn btn-default right-align" aria-label="Left Align" id="button_connect">
+                        Se déconnecter
+                    </button></a>
+                {{else}}
+                    <a href="{{SkillShareConfig.serverProtocol}}://{{SkillShareConfig.serverAddr}}/callCAS"><button type="button" class="btn btn-default right-align" aria-label="Left Align" id="button_connect">
+                        Se connecter
+                    </button></a>
+                {{/if}}
             </div>
         </div>
     </div>
