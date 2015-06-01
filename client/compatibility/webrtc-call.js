@@ -28,6 +28,8 @@ function WebRTCCall () {
   var pc;
 
   var onNewCallCallback;
+  var callerGotUserMediaCallback;
+  var calleeGotUserMediaCallback;
   var onCallRefusedCallback;
   var onRemoteHangupCallback;
   var onGetUserMediaErrorCallback;
@@ -55,7 +57,9 @@ function WebRTCCall () {
     isInitiator = true;
     if (!Meteor.users.findOne({username : username})) {
       // invalid username
-      callback({error : "User not found"});
+      callback({error : "Utilisateur non trouvé"});
+    } else if (username == Meteor.user().username) {
+       callback({error : "Impossible d'appeler soi-même"});
     } else {
       remoteUsername = username;
       Meteor.call('initiateCall', Meteor.user().username, username, cb);
@@ -92,6 +96,14 @@ function WebRTCCall () {
 
   this.hangup = function(callback) {
     hangup(callback);
+  };
+
+ this.callerGotUserMedia = function(callback) {
+    callerGotUserMediaCallback = callback;
+  };
+
+  this.calleeGotUserMedia = function(callback) {
+    calleeGotUserMediaCallback = callback;
   };
 
   this.onCallRefused = function(callback) {
@@ -131,7 +143,12 @@ function WebRTCCall () {
       if (message === 'got user media') {
         console.log('Received message:', message);
         if (isInitiator) {
-          navigator.getUserMedia(constraints, getUserMediaHandler, getUserMediaErrorHandler);
+          navigator.getUserMedia(constraints, function(stream) {
+            getUserMediaHandler(stream);
+            callerGotUserMediaCallback();
+          }, getUserMediaErrorHandler);
+        } else {
+          calleeGotUserMediaCallback();
         }
         checkAndStart();
       } else if (message.type === 'offer') {
@@ -171,7 +188,6 @@ function WebRTCCall () {
     console.log('navigator.getUserMedia error: ', error);
     Meteor.call('refuseCall', Session.get('caller'));
     onGetUserMediaErrorCallback();
-
   }
   // Channel negotiation trigger function
   function checkAndStart() {
@@ -200,7 +216,7 @@ function WebRTCCall () {
     pc.onremovestream = handleRemoteStreamRemoved;
   }
   // ICE candidates management
-  function handleIceCandidate(event) {
+  function handleIceCandidate(event){
     console.log('handleIceCandidate event: ', event);
     if (event.candidate) {
       sendMessage({
