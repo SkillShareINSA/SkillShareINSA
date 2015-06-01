@@ -3,30 +3,46 @@
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
                 <a href="/">
-                    Skillshare INSA
+                    <!-- <img src="/img/logo.png" style="height:100%;width:100%"/> -->
                 </a>
-                <i>Partagez vos compétences</i>
             </li>
             <li>
                 <a href="/inbox">
-                    Messages <span class="badge">{{nbUnreadMessages}}</span>
+                    Messages 
+                    <span class="fa fa-inbox" aria-hidden="true"></span> 
+                    <span class="badge">{{nbUnreadMessages}}</span>
                 </a>
             </li>
             <li>
-                <a href="/courses">Matières</a>
+                <a href="/courses">
+                    Matières
+                    <span class="fa fa-book" aria-hidden="true"></span> 
+                </a>
             </li>
             <li>
-                <a href="/call">Conversation</a>
+
+                <a href="/call">
+                    Conversation
+                    <span class="fa fa-phone" aria-hidden="true"></span> 
+                </a>
             </li>
             <li>
-                <a href="/about">A propos</a>
+                <a href="/about">
+                    A propos
+                    <span class="fa fa-question" aria-hidden="true"></span> 
+                </a>
             </li>
             <li>
-                <a href="/contact">Contact</a>
+                <a href="/contact">
+                    Contact
+                    <span class="fa fa-envelope" aria-hidden="true"></span> 
+                </a>
             </li>
             {{#if currentUser}}
             <li>
-                <a href="{{SkillShareConfig.serverProtocol}}://{{SkillShareConfig.serverAddr}}/callCAS/?logout">Logout</a>
+                <a href="{{SkillShareConfig.serverProtocol}}://{{SkillShareConfig.serverAddr}}/callCAS/?logout">Logout
+                    <span class="fa fa-power-off" aria-hidden="true"></span> 
+                </a>
             </li>
             {{/if}}
             {{#if currentUser}}
@@ -43,17 +59,5 @@
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
-/*
-        UI.registerHelper('nbUnreadMessages', function() {
-            if(this.userId != null){
-                console.log("On est bien rentré dans le helper");
-                return Meteor.user().nb_unread_messages;
-            }
-        
-            else
-            return -1;
-        });*/
-       
-
     </script>
 </template>
