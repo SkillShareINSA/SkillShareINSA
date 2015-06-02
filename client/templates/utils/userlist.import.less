@@ -1,6 +1,10 @@
 #userList {
 	display: none;
 }
+#userList ul {
+  list-style-type: none;
+  padding-left: 10px;
+}
 #userList ul i {
   float : right;
   margin-right : 5px;
@@ -8,10 +12,15 @@
 #userList ul i.online {
   border-radius: 50px;
   background-color: chartreuse;
+  width: 14px;
+  height: 14px;
 }
+
 #userList ul li:hover {
-	font-size : 20px;
-	cursor: pointer;
+  font-size: 20px;
+  color:white;
+  background-color : #D35353;
+  cursor: pointer;
 }
 @media(min-width:768px) {
 	#userList {

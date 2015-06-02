@@ -13,20 +13,22 @@
 #videoWindow video#localVideo {
   z-index: 3;
   background-color: rgba(66, 208, 208, 0.18);
-  height: @localVideoHeight;
   position: absolute;
   right: 43px;
   top: 12px;
   border-radius: 6px;
+  height: 101px;
 }
 #videoCallPanel #rightPanel {
   width: 100%;
   bottom : 0;
   right : 0;
+  background-color: rgba(0,0,0,0.6);
+  color : #D35353;
+  height: 100%;
 }
 #videoCallPanel #userList {
   margin-top : 20px;
-  border: 1px dotted;
 }
 
 #videoWindow #videoButtonPanel {
@@ -121,6 +123,9 @@ i.fa-custom-lg {
 
   #videoWindow #videoCenterInfo i {
     font-size: 10em;
+  }
+  #videoWindow video#localVideo {
+    height: @localVideoHeight;
   }
   #videoWindow.full-screen video#remoteVideo {
     margin-right: 135px;

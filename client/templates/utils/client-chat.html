@@ -1,5 +1,5 @@
 <template name="client_chat">
-		<div id="container" class="col-xs-4">
+		<div id="container" class="clientChatPanel col-xs-4">
 			<div id="panel_messages" class="row">
 				{{#each messages}}
 				<p class="message">
@@ -10,15 +10,14 @@
 							{{sender_name}} :
 						{{/if}}
 					</span>
-					<span class="content">{{content}}</span>
+					<span class="content {{#if userIsSender sender_id}}content-me{{else}}content-mate{{/if}}">{{content}}</span>
 					<p class="date">{{getDate date}}</p>
-					<hr/>
 				</p>
 				{{/each}}
 			</div>
 
 			<div id="panel_write" class="row">
-				<textarea id="textearea" class="form-control" rows="3"></textarea>
+				<textarea id="textearea" class="form-control" rows="2"></textarea>
 			</div>
 
 			<div id="panel_controls" class="row" >

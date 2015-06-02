@@ -1,6 +1,6 @@
 <template name="userList">
     <div id="userList">
-        Nos chers collègues
+        Nos chers collègues<hr/>
         <ul>
         {{#each userList}}
             {{#unless isCurrentUser username}}
@@ -12,7 +12,7 @@
                     {{address}}
                 {{/each}}
             {{/if}}
-            <i class="fa fa-circle-thin {{#if status.online}}online{{/if}}"></i>
+            <i class="{{#if status.online}}online{{else}}fa fa-circle-thin{{/if}}"></i>
             {{#if status.online}}
                 <i class="fa fa-phone"></i>
             {{/if}}
