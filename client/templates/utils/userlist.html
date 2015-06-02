@@ -13,6 +13,9 @@
                 {{/each}}
             {{/if}}
             <i class="fa fa-circle-thin {{#if status.online}}online{{/if}}"></i>
+            {{#if status.online}}
+                <i class="fa fa-phone"></i>
+            {{/if}}
             </li>
             {{/unless}}
         {{/each}}

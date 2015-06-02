@@ -6,3 +6,11 @@ Template.userList.helpers({
     return Meteor.user().username == username;
   }
 });
+
+Template.userList.events({
+	'click i.fa-phone' : function(e) {
+		Router.go('/call/' + e.target.parentNode.textContent.trim());
+		// workaround to execute Template.videoCall.onRendered
+		window.location.reload();
+	}
+});

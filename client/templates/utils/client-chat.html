@@ -3,14 +3,14 @@
 			<div id="panel_messages" class="row">
 				{{#each messages}}
 				<p class="message">
-					<p class="name_user">
+					<span class="name_user">
 						{{#if userIsSender sender_id}}
 							Moi :
 						{{else}}
 							{{sender_name}} :
 						{{/if}}
-					</p>
-					<p class="content">{{content}}</p>
+					</span>
+					<span class="content">{{content}}</span>
 					<p class="date">{{getDate date}}</p>
 					<hr/>
 				</p>
