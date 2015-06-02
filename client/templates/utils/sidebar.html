@@ -2,15 +2,22 @@
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
-                <a href="/">
-                    <!-- <img src="/img/logo.png" style="height:100%;width:100%"/> -->
+                <div id="anim_background"></div>
+                <a href="/" style="position:relative;z-index=2">
+                    <img id="logo" src="/img/logo.png"/>
                 </a>
             </li>
-            <li>
+            <li id="li_inbox">
                 <a href="/inbox">
                     Messages 
-                    <span class="fa fa-inbox" aria-hidden="true"></span> 
-                    <span class="badge">{{nbUnreadMessages}}</span>
+                    <span class="fa fa-inbox" aria-hidden="true"></span>
+                    {{#if currentUser}}
+                        <div id="badge">  
+                            <p>{{nbUnreadMessages}}</p>
+                        </div>
+                    {{else}}
+                        <div id="barre"></div>
+                    {{/if}}
                 </a>
             </li>
             <li>
@@ -22,14 +29,14 @@
             <li>
 
                 <a href="/call">
-                    Conversation
+                    Appel
                     <span class="fa fa-phone" aria-hidden="true"></span> 
                 </a>
             </li>
             <li>
                 <a href="/about">
                     A propos
-                    <span class="fa fa-question" aria-hidden="true"></span> 
+                    <span class="fa fa-question" aria-hidden="true" style="margin-right:5px;"></span> 
                 </a>
             </li>
             <li>
@@ -40,16 +47,12 @@
             </li>
             {{#if currentUser}}
             <li>
-                <a href="{{SkillShareConfig.serverProtocol}}://{{SkillShareConfig.serverAddr}}/callCAS/?logout">Logout
+                <a style="color:#D35353" href="{{SkillShareConfig.serverProtocol}}://{{SkillShareConfig.serverAddr}}/callCAS/?logout">Déconnexion
                     <span class="fa fa-power-off" aria-hidden="true"></span> 
                 </a>
             </li>
             {{/if}}
-            {{#if currentUser}}
-            <li>
-                <a href="{{SkillShareConfig.serverProtocol}}://{{SkillShareConfig.serverAddr}}:{{SkillShareConfig.serverPort}}" id="btn_logout_debbug">Logout DEBBUG user</a>
-            </li>
-            {{/if}}
+            <div id="div_padding"></div>
         </ul>
     </div>
 
@@ -58,6 +61,17 @@
         $("#menu-toggle, #sidebar-opener").click(function (e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
+        });
+        $("#sidebar-wrapper").mouseover(function(e){
+            $("#logo").css("width","50%");
+            $("#logo").css("margin-left","45px");
+            $("#logo").css("margin-top","8px");
+            $("#anim_background").css("width","100%");
+        }).mouseout(function(e) {
+            $("#logo").css("width","27%");
+            $("#logo").css("margin-left","155px");
+            $("#logo").css("margin-top","15px");
+            $("#anim_background").css("width","0%");
         });
     </script>
 </template>
