@@ -6,6 +6,7 @@
         </div>
         <header class="navbar navbar-default" role="navigation">
             <div class="collapse navbar-collapse" id="navigation">
+                <li>{{matiereName}}</li>
                 <ul class="nav navbar-nav">
                     <li><a href="{{pathFor 'matierePost'}}">Post</a></li>
                 </ul>
@@ -31,6 +32,7 @@
                         <h3 id="nameTuteur">{{this}}</h3>
                     </div>
                     <button id="envoyeMessageBtn" class="btn btn-default pull-right"><a id="ver" href="/inbox?pseudo={{this}}">envoye un message</a></button>
+                    <button id="appeleeBtn" class="btn btn-default pull-right"><a  href="/call/{{this}}">appeler</a></button>
                 </div>
                 {{/each}}
         </div>
