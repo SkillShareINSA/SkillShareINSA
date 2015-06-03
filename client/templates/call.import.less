@@ -26,6 +26,8 @@
   background-color: rgba(0,0,0,0.6);
   color : #D35353;
   height: 100%;
+  border: 1px #D35353 solid;
+  border-radius: 3px;
 }
 #videoCallPanel #userList {
   margin-top : 20px;
@@ -115,6 +117,9 @@ i.fa-custom-lg {
 .fa-custom-pulse-slow {
   -webkit-animation: fa-spin 1.25s infinite steps(8);
 }
+.clientChatPanel {
+    background-color: rgba(0,0,0,0.8);
+}
 
 @media(min-width: @width-border) {
   #videoWindow #videoCenterInfo {
@@ -134,5 +139,9 @@ i.fa-custom-lg {
   #videoCallPanel #rightPanel {
     width: 230px;
     position: fixed;
+  }
+  .clientChatPanel {
+    position : absolute;
+    bottom : 0;
   }
 }
