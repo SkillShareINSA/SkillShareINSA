@@ -1,9 +1,9 @@
 <template name="PostItem">
     <div class="post">
         <div class="post-content">
-            <a href="{{pathFor 'PostPage'}}" > <h3>{{title}}<span>  {{matiereName}}</span></h3></a>
+            <a href="{{pathFor 'PostPage'}}" > <h3>{{title}}</h3></a>
             <p>
-                auteur:  {{author}}
+                auteur:  {{author}}<br>
                 <a href="{{pathFor 'PostPage'}}">{{commentsCount}} commentaire</a>
                 {{#if ownPost}}<a href="{{pathFor 'postEdit'}}">Editer</a>{{/if}}
             </p>
