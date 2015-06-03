@@ -11,6 +11,10 @@ Template.PostEdit.events({
             matiereName:Posts.findOne({_id :this._id}).matiereName,
             title: $(e.target).find('[name=title]').val()
         }
+        if(! postProperties.title)
+        {
+            return alert("Le SUJET est vide");
+        }
 
         Posts.update(currentPostId, {$set: postProperties}, function(error) {
             if (error) {

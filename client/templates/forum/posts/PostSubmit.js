@@ -10,11 +10,9 @@ Template.PostSubmit.events({
             matiereName:matiereName_tmp
         };
 
-        var errors = {};
         if (! post.title) {
-            console.log("entrer");
-            errors.body = "Le sujet est vide";
-            return Session.set('postSubmitErrors', errors);
+            console.log("vide");
+            return alert("le SUJET est vide");
         }
 
         Meteor.call('postInsert', post, function(error, result) {
