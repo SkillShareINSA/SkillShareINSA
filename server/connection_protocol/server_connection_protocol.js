@@ -10,6 +10,7 @@ if (Meteor.isServer) {
 	 	if (user.username.indexOf("user_test") > -1) {
 	 		user.debbug = true;
 	 	}
+	 	user.nb_unread_messages = 0;
 	  	// We still want the default hook's 'profile' behavior.
 	  	if (options.profile)
 	    	user.profile = options.profile;
