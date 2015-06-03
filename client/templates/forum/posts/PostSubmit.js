@@ -10,8 +10,6 @@ Template.PostSubmit.events({
             matiereName:matiereName_tmp
         };
 
-        console.log("j'ai un probleme");
-
         var errors = {};
         if (! post.title) {
             console.log("entrer");
