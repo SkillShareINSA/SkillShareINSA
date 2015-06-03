@@ -1,7 +1,7 @@
 <template name="PostItem">
     <div class="post">
         <div class="post-content">
-            <h3>{{title}}<span>  {{matiereName}}</span></h3>
+            <a href="{{pathFor 'PostPage'}}" > <h3>{{title}}<span>  {{matiereName}}</span></h3></a>
             <p>
                 auteur:  {{author}}
                 <a href="{{pathFor 'PostPage'}}">{{commentsCount}} commentaire</a>
