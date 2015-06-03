@@ -11,7 +11,8 @@
   "dependencies": {
     "mocha": "~2.2.5",
     "path": "~0.11.14",
-    "nightmare": "~1.8.1",
-    "chai": "~2.3.0"
+    "nightmare": "~1.8.2",
+    "chai": "~2.3.0",
+    "should": "~6.0.3"
   }
 }

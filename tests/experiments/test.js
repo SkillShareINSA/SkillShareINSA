@@ -34,12 +34,12 @@ describe('DOM Testing', function () {
             });
         });
         describe('logged in', function() {
-            this.timeout(60000); 
+            this.timeout(90000); 
             it('should display remote video', function(done) {
                 new Nightmare()
                     .goto(url)
                     .click('#login-sign-in-link')
-                    .type('input#login-username', 'user_test')
+                    .type('input#login-username', 'user_test1')
                     .type('input#login-password', '123456')
                     .click('#login-buttons-password')
                     .wait()
